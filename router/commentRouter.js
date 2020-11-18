@@ -16,6 +16,10 @@ router.get('/', async(req, response) => {
     let sqlStr = `select unickname,uimg,imglist,score,content,response,time from (shop_comment left join user on shop_comment.uid=user.uid) where sid=${sid}`
     let { results } = await query(sqlStr)
 
+    // time - 这时是UTC格式
+    results.forEach(item => {
+      item.time = new Date(item.time).toLocaleString('chinese', { hour12: false })
+    })
     response.send(results)
     // console.log(results)
   } catch(err) {

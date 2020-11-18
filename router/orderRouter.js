@@ -1,7 +1,6 @@
 const path = require('path')
 const express = require('express')
 const { query } = require('../utils/mysql/mysqlPromise')
-const { countReset } = require('console')
 
 const router = express.Router()
 /**

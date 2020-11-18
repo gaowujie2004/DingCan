@@ -14,6 +14,8 @@ connection.connect(err => {
   console.log('MySql 连接成功')
 })
 
+exports.connection = connection
+
 exports.query = (sqlStr, array)=> {
   return new Promise((resolve, reject) => {
     connection.query(sqlStr, array, (err, results, field) => {
