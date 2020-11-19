@@ -8,7 +8,7 @@ const connection = mysql.createConnection({
 
 connection.connect(err => {
   if (err) {
-    console.log(err)
+    console.log('----------------mysql链接失败, 程序自动退出\n' ,err)
     process.exit(-1)
   }
   console.log('MySql 连接成功')
