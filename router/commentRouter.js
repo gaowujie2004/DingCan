@@ -15,7 +15,6 @@ router.get('/', async(req, response) => {
   try {
     let sqlStr = `select unickname,uimg,imglist,score,content,response,time from (shop_comment left join user on shop_comment.uid=user.uid) where sid=${sid}`
     let { results } = await query(sqlStr)
-
     // time - 这时是UTC格式
     results.forEach(item => {
       item.time = new Date(item.time).toLocaleString('chinese', { hour12: false })
@@ -33,7 +32,7 @@ router.get('/', async(req, response) => {
 
 /**
  * 概括:  放商家的回复信息
- * URL: /comment/response
+ * URL:  /comment/response
  * 参数: sid=xxx & uid=xxx & response=xxxx
  * 方法:  POST
 */

@@ -82,7 +82,6 @@ router.get('/top', async(req, response) => {
 
 })
 
-
 router.get('/menu', async(req, response) => {
   /**
    * 菜单列表
@@ -155,6 +154,42 @@ router.post('/order/remove', urlencoded, async(req, response) => {
     response.statusMessage = 'error'
     response.send('error')
   }
+})
+
+router.get('/comment', async(req, response) => {
+  let sid = req.query.sid
+
+  try {
+    let { results } = await query(`select unickname,uimg,imglist,score,content,time,response from (shop_comment left join user on shop_comment.uid=user.uid) where sid=${sid}`)
+    let totalNum=results.length, goodNum=0, middleNum=0, badNum=0
+    for (let resultRow of results) {  // 此循环是用来做 参评人数的功能
+      if (resultRow.score >= 4) {
+        goodNum++
+      } else if (resultRow.score >= 2) {
+        middleNum++
+      } else {
+        badNum++
+      }
+
+      if (resultRow.imglist.length ===2) {  // "[]"
+        resultRow.imglist = null
+      }
+      let time = resultRow.time
+      resultRow.time = new Date(time).toLocaleString('chinese', { hour12: false })
+    }
+
+    response.send({ totalNum, goodNum, middleNum, badNum, list: results })
+  } catch(err) {
+    console.log('------------------------此处有误---', err)
+    response.statusCode = 500
+    response.statusMessage = 'error'
+    response.send('error')
+  }
+})
+
+router.post('/comment', async(req, response) => {
+  let sid = req.query.sid
+  
 })
 
 module.exports = router
