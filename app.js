@@ -11,6 +11,8 @@ const commentRouter = require('./router/commentRouter')
 const detailRouter = require('./router/detailRouter') 
 
 const app = express()
+app.use('/public', express.static( path.join(__dirname, 'public') ))
+
 app.use('/', indexRouter)
 app.use('/home', homeRouter)
 app.use('/order', orderRouter)

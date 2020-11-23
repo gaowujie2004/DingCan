@@ -1,11 +1,60 @@
 const path = require('path')
 const bodyParser = require('body-parser')
 const express = require('express')
+const multer = require('multer')
 const { query } = require('../utils/mysql/mysqlPromise')
 const { log } = require('console')
 
 const router = express.Router()
 const urlencoded = bodyParser.urlencoded({ extended: false })
+const commentStorage = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, path.join(__dirname, '../public/img/comment'))
+  },
+  filename(req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname))
+  }
+})
+const commentUpload = multer({ storage: commentStorage, limits: { fileSize: 5242880 } })
+
+router.get('/', async(req, response) => {
+  /**
+   * 额外功能 - 浏览量增加 - 插入shop_browser表
+  */
+  let sid = req.query.sid
+  try {
+    await query(`insert into shop_browser(sid) values(${sid})`)
+    response.send('1')
+  } catch(err) {
+    // console.log('------------------------此处有误' ,err)
+    response.statusCode = 400
+    response.statusMessage = 'error'
+    response.send('error')
+  }
+
+})
+
+router.post('/collect', async(req, response) => {
+  let sid = req.query.sid
+  let uid = req.query.uid
+
+  try {
+    query(`insert into user_like(uid,sid) values(${uid}, ${sid})`)
+    .then(val => {
+      log(1111111)
+      response.send('1')
+    })
+    .catch(err => {
+      log(222222)
+      response.statusCode = 400
+      response.send('0') // 重复操作
+    })
+  } catch(err) {
+    console.log('------------------------此处有误' ,err)
+    response.statusCode = 500   // 500 是服务器错误
+    response.send('-1')
+  }
+})
 
 router.post('/like', urlencoded, async(req, response) => {
   /**
@@ -54,9 +103,15 @@ router.get('/top', async(req, response) => {
     let showPromise = query(`select img from shop_show where sid=${sid}`) 
     let commentPromise = query(`select avg(score) as avgscore,count(*) as count from shop_comment where sid=${sid}`)
     let likePromise = query(`select sid from shop_like where sid=${sid} and uid=${uid}`)
+    let collectPromise = query(`select uid from user_like where sid=${sid} and uid=${uid}`)
+    if (!uid) { // 没有uid参数时
+      likePromise = Promise.resolve({results: []})
+      collectPromise = Promise.resolve({results: []})
+    }
     let promiseAllList = await Promise.all([
       shopPromise, showPromise,
-      commentPromise, likePromise
+      commentPromise, likePromise,
+      collectPromise
     ])
     let { shopname: shopName, scanteen: canteen, slogo: logo, slikenum: likeNum } = promiseAllList[0].results[0]   // ok
     let showList = promiseAllList[1].results.reduce((temp, item) => {
@@ -69,9 +124,10 @@ router.get('/top', async(req, response) => {
     let score = commentObj.avgscore.toFixed(2)
     let commentNum = commentObj.count
     let isLike = promiseAllList[3].results.length > 0 ? 1:0
+    let isCollect = promiseAllList[4].results.length > 0 ? 1:0
 
     response.send({
-      shopName,canteen,logo,likeNum,score,commentNum,isLike,showList
+      shopName,canteen,logo,likeNum,score,commentNum,isLike,isCollect,showList
     })
   } catch(err) {
     console.log('------------------------此处有误' ,err)
@@ -187,9 +243,27 @@ router.get('/comment', async(req, response) => {
   }
 })
 
-router.post('/comment', async(req, response) => {
+router.post('/comment', commentUpload.array('imglist', 4), async(req, response) => {
   let sid = req.query.sid
+  let uid = req.query.uid  
+  let score = req.body.score 
+  let content = req.body.content || ''
+  if (content.length >= 100) {
+    response.statusCode = 400 // 客户端操作有误
+    response.send('字数过多')
+  }
   
+  try {
+    let imglist = req.files.map( item => path.posix.join('/public/img/comment', item.filename) )
+      imglist = JSON.stringify(imglist)
+    await query(`insert into shop_comment(sid,uid,score,content,imglist) values(${sid},${uid},${score},'${content}','${imglist}')`)
+    response.send('1')
+  } catch(err) {
+    console.log('------------------------此处有误---', err)
+    response.statusCode = 500
+    response.statusMessage = 'error'
+    response.send('error')
+  }
 })
 
 module.exports = router
