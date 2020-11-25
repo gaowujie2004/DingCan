@@ -28,12 +28,12 @@ router.get('/base', async (req, response) => {
     let nowIncomePromise = query(`select price from shop_order where sid=${sid} and day(time)=day(curdate())`)
 
     // 点赞数
-    let totalLikePromise = query(`select sum(likenum) as total from shop_like where sid=${sid}`)
-    let nowLikePromise = query(`select likenum from shop_like where sid=${sid} and day(time)=day(curdate())`)
+    let totalLikePromise = query(`select count(*) as total from shop_like where sid=${sid}`)
+    let nowLikePromise = query(`select count(*) as num from shop_like where sid=${sid} and day(time)=day(curdate())`)
 
     // 浏览量
-    let totalBrowserPromise = query(`select sum(num) as total from shop_browser where sid=${sid}`)
-    let nowBrowserPromise = query(`select num from shop_browser where sid=${sid} and date(time)=date(curdate())`)
+    let totalBrowserPromise = query(`select count(*) as total from shop_browser where sid=${sid}`)
+    let nowBrowserPromise = query(`select count(*) as num from shop_browser where sid=${sid} and date(time)=date(curdate())`)
 
     let values = await Promise.all([
       totalOrderPromise, nowOrderPromise,
@@ -45,39 +45,39 @@ router.get('/base', async (req, response) => {
     // 订单量 0 1
     let totalOrderNum = 0
     let nowOrderNum = 0
-    if (values[0].result.length > 0) {
-      totalOrderNum = values[0].result[0].count
+    if (values[0].results.length > 0) {
+      totalOrderNum = values[0].results[0].count
     }
-    if (values[1].result.length > 0) {
-      nowOrderNum = values[1].result[0].count
+    if (values[1].results.length > 0) {
+      nowOrderNum = values[1].results[0].count
     }
 
     // 收入 2 3
     let monthIncome = 0
     let nowIncome = 0
-    if (values[2].result.length > 0) {
-      monthIncome = values[2].result[0].monthprice
+    if (values[2].results.length > 0) {
+      monthIncome = values[2].results[0].monthprice
     }
-    if (values[3].result.length > 0) {
-      nowIncome = values[3].result[0].price
+    if (values[3].results.length > 0) {
+      nowIncome = values[3].results[0].price
     }
 
     // 点赞量 4 5
     let totalLikeNum=0, nowLikeNum=0
-    if (values[4].result.length > 0) {
-      totalLikeNum = values[4].result[0].total
+    if (values[4].results.length > 0) {
+      totalLikeNum = values[4].results[0].total
     }
-    if (values[5].result.length > 0) {
-      nowLikeNum = values[4].result[0].likenum
+    if (values[5].results.length > 0) {
+      nowLikeNum = values[4].results[0].num
     }
 
     // 浏览量 6 7
     let totalBrowserNum=0, nowBrowserNum=0
-    if (values[6].result.length > 0) {
-      totalBrowserNum = values[6].result[0].total
+    if (values[6].results.length > 0) {
+      totalBrowserNum = values[6].results[0].total
     }
-    if (values[7].result.length > 0) {
-      nowBrowserNum = values[7].result[0].num
+    if (values[7].results.length > 0) {
+      nowBrowserNum = values[7].results[0].num
     }
 
     response.send({ nowBrowserNum, totalBrowserNum, nowLikeNum, totalLikeNum, nowIncome, monthIncome, nowOrderNum, totalOrderNum })
@@ -86,6 +86,7 @@ router.get('/base', async (req, response) => {
     console.log(err)
     response.statusCode = 400
     response.statusMessage = 'database query error'
+    response.send()
   }  
 })
 
