@@ -18,7 +18,6 @@ var storage = multer.diskStorage({
 })
 var upload = multer({ storage: storage })
 
-
 userRouter.use(urlencoded)
 
 var siginUpload = upload.fields([{name: 'logo'}, {name: 'showList'}])
