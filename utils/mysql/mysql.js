@@ -2,7 +2,8 @@ var mysql = require("mysql");
 var connection = mysql.createConnection({
     user: 'root',
     password: 'root',
-    database: 'project'
+    database: 'project',
+    timezone: 'Asia/Shanghai',
 })
 var Mysql = function(order,back, response){
     connection.query(order,function (err,data) {

@@ -119,14 +119,11 @@ router.get('/order', async (req, response) => {
 router.get('/income', async (req, response) => {
   let sid = Number(req.query.sid)
 
-  let { results } = await query(`select sum(price) as dayprice,date(time) as daytime from shop_order where sid=${sid} group by date(time) order by daytime asc`)
-  let res = results.map( item => {
-    let daytime = new Date(item.daytime).toLocaleDateString('chinese', { hour12: false })
-    daytime = daytime.replace(/\//g, '-')
+  let year = new Date().getFullYear()
+  let month = req.query.month || (new Date().getMonth()+1)
 
-    return {daytime, dayprice: item.dayprice}
-  })
-  response.send(res)
+  let { results } = await query(`select sum(price) as dayprice,day(time) as daytime from shop_order where sid=${sid} and year(time)='${year}' and month(time)='${month}' group by date(time) order by time asc`)
+  response.send(results)
 })
 
 /**

@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="../public/layui-dist/css/layui.css">
   <link rel="stylesheet" href="../public/css/public.css">
   <link rel="stylesheet" href="../public/css/home.css">
+  <link rel="stylesheet" href="../public/css/order.css">
+  <link rel="stylesheet" href="http://at.alicdn.com/t/font_2267194_9655sgw1wvg.css">
 </head>
 <body>
 
@@ -21,12 +23,18 @@
       </div>
     </div>
     <div class="top-head-r">
-      <div class="top-head-toleft"></div>
-      <div class="top-head-full"></div>
+      <div class="top-head-toleft iconfont icon-to-left">
+      </div>
+      <div class="top-head-full iconfont icon-screen-full"></div>
       <div class="top-head-profile">
-        <div class="profile-icon">头像</div>
+        <div class="profile-icon">
+          <img src="../public/img/avg.svg" alt="">
+        </div>
         <div class="profile-name">高武杰</div>
         <div class="profile-down layui-icon layui-icon-down"></div>
+        <div class="profile-up-container">
+          <button>退出登录</button>
+        </div>
       </div>
     </div>
   </div>
@@ -40,29 +48,30 @@
         <span>首页预览</span>
       </li>
       <li>
-        <span class="nav-icon layui-icon layui-icon-home"></span>
+        <span class="nav-icon iconfont icon-orders"></span>
         <span>订单管理</span>
       </li>
       <li  class="nav-item-click">
-        <span class="nav-icon layui-icon layui-icon-home"></span>
+        <span class="nav-icon iconfont icon-caipinbaobiao"></span>
         <span>菜单管理</span>
       </li>
       <li>
-        <span class="nav-icon layui-icon layui-icon-home"></span>
+        <span class="nav-icon iconfont icon-pinglun1"></span>
         <span>评论管理</span>
       </li>
       <li>
-        <span class="nav-icon layui-icon layui-icon-home"></span>
+        <span class="nav-icon iconfont icon-profile"></span>
         <span>商家信息</span>
       </li>
     </ul>
     <ul class="main-content px-big py">
       <li class="home-content">
         <div class="home-content-title text-mb">
-          <h3>商家信息</h3>
+          <h3 style="margin-bottom:0;">商家信息</h3>
           <span class="">数据更新于 2020-6-21 15:29:00</span>
         </div>
         <div class="home-content-row">
+          <!-- BIG  Start -->
           <div class="home-content-card-big home-content-card">
             <h3 class="total-tit">交易额</h3>
             <p class="number">
@@ -73,15 +82,17 @@
               <div class="btn">本月</div>
             </div>
           </div>
-          <div class="home-content-col">
-            <div class="home-content-card">
+          <!-- BIG End -->
+          <div class="home-content-group">
+            <div class="home-group-row">
+              <div class="home-content-card">
               <h3 class="text-mb-small">订单数</h3>
               <div class="icon-row">
-                <div class="icon-left"></div>
+                <div class="icon-left iconfont icon-orders"></div>
                 <div class="icon-right">
                   <div class="number">69</div>
                   <p class="rate-row">
-                    <span class="rate-number">+1.6%</span>
+                    <span class="rate-number rate-decrease">-1</span>
                     <span class="rate-text">同比昨日</span>
                   </p>
                 </div>
@@ -91,7 +102,7 @@
               <h3 class="text-mb-small">点赞数</h3>
               <div>
                 <div class="icon-row">
-                  <div class="icon-left"></div>
+                  <div class="icon-left iconfont icon-like"></div>
                   <div class="icon-right">
                     <div class="number">69</div>
                     <p class="rate-row">
@@ -106,7 +117,7 @@
               <h3 class="text-mb-small">浏览数</h3>
               <div>
                 <div class="icon-row">
-                  <div class="icon-left"></div>
+                  <div class="icon-left iconfont icon-browser"></div>
                   <div class="icon-right">
                     <div class="number">69</div>
                     <p class="rate-row">
@@ -117,24 +128,439 @@
                 </div>
               </div>
             </div>
-            <div class="home-content-card home-content-card-last">
-              <h3>订单动态</h3>
+            </div>
+            <div class="home-group-row home-group-row-last home-content-card">
+              <h3 style="margin-bottom: 0;">订单动态</h3>
               <div>
                 <p>2020-06-12 15:41:21 用户“高武杰” 提交了订单</p>
                 <p>2020-06-12 15:41:21 用户“高武杰” 提交了订单</p>
               </div>
+              <div class="refresh layui-icon layui-icon-refresh" title="刷新"></div>
             </div>
           </div>
         </div>
-        <div class="main-row"></div>
+        <div class="chart-row mt">
+          <div class="home-content-card">
+            <h3 class="mb">预计收入</h3>
+            <div class="chart-container" id="chart-container">
+            </div>
+          </div>
+          <div class="home-content-card">
+            <p>
+              <h3>商品预定</h3>
+            </p>
+            <div class="menu-container">
+              <div class="tit-row">
+                <div class="order">排名</div>
+                <div class="name">商品名称</div>
+                <div class="total">销量</div>
+              </div>
+              <div class="item-row">
+                <div class="order">1</div>
+                <div class="name">
+                  <img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3281808061,454912648&fm=26&gp=0.jpg" alt="">
+                  <span>牛肉面</span>
+                </div>
+                <div class="total">56</div>
+              </div>
+              <div class="item-row">
+                <div class="order">2</div>
+                <div class="name">
+                  <img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3281808061,454912648&fm=26&gp=0.jpg" alt="">
+                  <span>牛肉面</span>
+                </div>
+                <div class="total">56</div>
+              </div>
+              <div class="item-row">
+                <div class="order">3</div>
+                <div class="name">
+                  <img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3281808061,454912648&fm=26&gp=0.jpg" alt="">
+                  <span>牛肉面</span>
+                </div>
+                <div class="total">56</div>
+              </div>
+              <div class="item-row">
+                <div class="order">4</div>
+                <div class="name">
+                  <img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3281808061,454912648&fm=26&gp=0.jpg" alt="">
+                  <span>牛肉面</span>
+                </div>
+                <div class="total">56</div>
+              </div>
+              <div class="item-row">
+                <div class="order">5</div>
+                <div class="name">
+                  <img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3281808061,454912648&fm=26&gp=0.jpg" alt="">
+                  <span>牛肉面</span>
+                </div>
+                <div class="total">56</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
+      <li class="order-content">
+        <table id="order-content-table" class="order-content-table">
+        </table>
+      </li>
+      <li class="menu-content">
+        <table id="menu-content-table" class="menu-content-table" lay-filter="menu-content-table"> 
+        </table>
+      </li>
+      <li class="comment-content">
+        <table id="comment-content-table" class="comment-content-table" lay-filter="comment-content-table"> 
+        </table>
+      </li>
+      <li class="shopinfo-content show">
+        商家信息
+      </li>
     </ul>
   </div>
   <!-- 主体 End -->
 
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+  <!-- <script src="/public/layer_mobile/layer.js"></script> -->
+  <script src="../public/layui-dist/layui.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.0.0-rc.3/echarts.min.js"></script>
+
+  <!-- 菜单模板 -->
+  <script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="sj">上架</a>
+    <a class="layui-btn layui-btn-xs" lay-event="xj">下架</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  </script>
+  <!-- 菜单模板 -->
+  <script type="text/html" id="menuDemo">
+    <img src="http://127.0.0.1:2020{{ d.mimg }}">
+  </script>
+
+  <!-- 评论模板 -->
+  <script type="text/html" id="commentImg">
+    <img src="http://127.0.0.1:2020{{ d.uimg }}">
+  </script>
+  <script type="text/html" id="commentImgList">
+    {{#  if(d.imglist.length > 0){ }}
+      {{#  layui.each(d.imglist, function(index,item){ }}
+        <img src="{{item}}" alt="">
+      {{#  }); }}
+    {{#  } else { }}
+      暂无图片
+    {{#  } }}
+  </script>
+  <script type="text/html" id="commentTool">
+    <a class="layui-btn layui-btn-xs" lay-event="xj">修改回复</a>
+  </script>
+
+  <script>
+    ;(async function(){
+      let { data: resData } = await axios.get('http://127.0.0.1:2020/home/income?sid=5&month=11')
+      let dateList = resData.map(v => {
+        let str = String(v.daytime)
+        return str.length<2 ? '0'+str : str
+      })
+      let valueList = resData.map(v => v.dayprice)
+
+
+      let myChart = echarts.init(document.querySelector('#chart-container'))
+      let options = {
+        grid: {
+          top: 40,
+          bottom: 50,
+          left: 40,
+          right: 40,
+        },
+        xAxis: {
+          type: 'category',
+          data: dateList,
+          boundaryGap: false,
+          name: '日期',
+          axisTick: {
+            show: false,
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#ccc'
+            },
+          },
+          axisLabel: {
+            color: '#333'
+          },
+        },
+        yAxis: {
+          type: 'value',
+          name: '预收入',
+          splitLine: {
+            show: false,
+          },
+          axisLabel: {
+            color: '#333',
+            margin: 0,
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#ccc'
+            },
+          },
+        },
+        series: [{
+          data: valueList,
+          type: 'line',
+          smooth: true,
+          markPoint: {
+            data: [{
+              type: 'max',
+              name: 'max',
+            }, {
+              type: 'average',
+              name: 'min'
+            }],
+            color: '#ff6600',
+            symbolSize: 7.6,
+            // symbol: 'image://http://127.0.0.1:2020/public/img/max.svg',
+            symbol: (val, obj) => {
+      
+              if (obj.name === 'max') {
+                return 'image://http://127.0.0.1:2020/public/img/max.svg'
+              }
+              return 'image://http://127.0.0.1:2020/public/img/avg.svg'
+              
+            },
+            label: {
+              offset: [0, -15],
+              formatter: obj => {
+                if (obj.name === 'max') {
+                  return `{max|${obj.value}}`
+                }
+                return `{min|${obj.value}}`
+              },
+              rich: {
+                max: {
+                  color: '#ff6600',
+                  fontWeight: 600,
+                fontSize: 12,
+                },
+                min: {
+                  color: '#0042ff',
+                  fontWeight: 600,
+                  fontSize: 12,
+                  offset: [0, 20]
+                }
+              },
+            },
+          },
+
+          itemStyle: {
+            color: '',
+            opacity: 0
+          },
+          lineStyle: {
+            color: 'rgba(255,102,0,.46)'
+          },
+          areaStyle: {normal: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+              offset: 0,
+              color: 'rgba(255,102,0,.16)'
+            }, {
+              offset: 0.4,
+              color: 'rgba(255,102,0,.1)'
+            }, {
+              offset: 0.75,
+              color: 'rgba(255,102,0,0)'
+            }]),
+          }}
+        }]
+      }
+      myChart.setOption(options)
+    })()
+    // 订单管理
+    layui.use('table', function(){
+      let table = layui.table
+      table.render({
+        elem: '#order-content-table',
+        url: 'http://127.0.0.1:2020/order?sid=5&type=month&time=2020-11',
+        request: {
+          limitName: 'num' //每页数据量的参数名，默认：limit
+        },
+        parseData: function(res){ //res 即为原始返回的数据
+          return {
+            "code": 0, //解析接口状态
+            "msg": res.message, //解析提示文本
+            "count": res.total, //解析数据长度
+            "data": res.data //解析数据列表
+          };
+        },
+        cols: [[
+          { field: '_id', title: 'ID',},
+          { field: 'uname', title: '用户昵称', },
+          { field: 'mname', title: '菜名', },
+          { field: 'price', title: '价格', sort: true, edit: 'text'},
+          { field: 'time', title: '下单时间', sort: true, },
+          { title: '操作', }
+        ]],
+        page: true,
+      })
+    })
+    
+    // 菜品管理
+    layui.use('table', function(){
+      let table = layui.table
+      table.render({
+       
+        elem: '#menu-content-table',
+        url: 'http://127.0.0.1:2020/menu/select?sid=5',
+        request: {
+          limitName: 'num' //每页数据量的参数名，默认：limit
+        },
+        parseData: function(res){ //res 即为原始返回的数据
+          return {
+            "code": 0, //解析接口状态
+            "msg": res.message, //解析提示文本
+            "count": res.totalNum, //解析数据长度
+            "data": res.data //解析数据列表
+          };
+        },
+        cols: [[
+          { field: 'mid', title: 'ID',},
+          { field: 'mname', title: '菜名', edit: true, },
+          { field: 'mprice', title: '价格', edit: true, },
+          { field: 'mimg', title: '图片', templet: '#menuDemo'},
+          { title: '操作', toolbar: '#barDemo'}
+        ]],
+        page: true,
+      })
+      // 操作 - 上架 下架 删除
+      table.on('tool(menu-content-table)', function(obj){
+        console.log(obj)
+        let mid = obj.data.mid
+        if (obj.event === 'sj') {     // 上架
+          axios
+            .post(`http://127.0.0.1:2020/menu/update`, `mid=${mid}&visibility=1`)
+            .then(val => {
+              if (Number(val.data) === 1) {
+                return layer.msg('成功上架, 上架后顾客可看到该商品')
+              }
+              layer.msg('上架失败')
+            })
+          return 
+        }
+        if (obj.event === 'xj') {    // 下架
+          axios
+            .post(`http://127.0.0.1:2020/menu/update`, `mid=${mid}&visibility=0`)
+            .then(val => {
+              if (Number(val.data) === 1) {
+                return layer.msg('成功下架, 下架后顾客将无法看到该商品')
+              }
+              layer.msg('下架失败')
+            })
+          return
+        }
+        
+        if (obj.event === 'del') {   // 删除
+          layer.confirm('删除后将无法恢复,确定删除吗?', {
+            btn: ['确定','取消'] //按钮
+          }, function(index){
+            layer.close(index)
+            axios
+              .get(`http://127.0.0.1:2020/menu/delete?mid=${mid}`)
+              .then(val => {
+                if (Number(val.data) === 1) {
+                  obj.del()
+                  return layer.msg('删除成功')
+                }
+                layer.msg('删除失败!!!')
+              })
+          }, function(){
+            
+          })
+          return
+        }
+
+      })
+      // 编辑 - 菜名 价格
+      table.on('edit(menu-content-table)', function(obj){
+        console.log(obj)
+
+        var value = obj.value //得到修改后的值
+        ,data = obj.data //得到所在行所有键值
+        ,field = obj.field; //得到字段
+        
+  
+        let mid = obj.data.mid
+        axios.post(`http://127.0.0.1:2020/menu/update`, `mid=${mid}&${field}=${value}`,
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        })
+        .then(val => {
+          if (Number(val.data) === 1) {
+            return layer.msg('修改成功')
+          }
+          layer.msg('修改失败')
+        })
+      })
+    })
+  
+    // 评论管理
+    layui.use('table', function(){
+      let table = layui.table
+      table.render({
+        elem: '#comment-content-table',
+        url: 'http://127.0.0.1:2020/comment?sid=1',
+        request: {
+          limitName: 'num' //每页数据量的参数名，默认：limit
+        },
+        parseData: function(res){ //res 即为原始返回的数据
+          return {
+            "code": 0, //解析接口状态
+            "msg": res.message, //解析提示文本
+            "count": res.totalNum, //解析数据长度
+            "data": res.data //解析数据列表
+          };
+        },
+        cols: [[
+          { field: 'id', title: 'ID',},
+          { field: 'score', title: '评分', sort: true},
+          { field: 'unickname', title: '用户昵称', },
+          { field: 'uimg', title: '用户头像', templet: '#commentImg' },
+          { field: 'imglist', title: '评论图片', templet: '#commentImgList'},
+          { field: 'content', title: '评论内容'},
+          { field: 'response', title: '商家回复', edit: true},
+          { title: '回复操作', toolbar: '#commentTool'},
+        ]],
+        page: true,
+      })
+
+      table.on('tool(comment-content-table)', obj => {
+        console.log(obj)
+        let oldResponse = obj.data.response
+        let id = obj.data.id
+
+        layer.prompt({title: '输入要回复的内容', formType: 2, value:oldResponse }, function(newResponse, index){
+          console.log(newResponse)
+          if (newResponse.length > 50) {
+            return layer.msg('不能超过50个字符')
+          }
+          axios
+            .post(`http://127.0.0.1:2020/comment/response`, `id=${id}&response=${newResponse}`)
+            .then(res => {
+              if (Number(res.data) === 1) {
+                layer.close(index)
+                obj.update({ response: newResponse })
+                return layer.msg('回复成功!')
+              }
+              layer.close(index)
+              layer.msg('回复失败!!')
+            })
+          // layer.close(index)
+        })
+      })
+    })
+
+    // 商家信息
+    
+
+  </script>
 </body>
 </html>

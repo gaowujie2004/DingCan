@@ -3,7 +3,8 @@ const mysql = require('mysql')
 const connection = mysql.createConnection({
   user: 'root',
   password: 'root',
-  database: 'project'
+  database: 'project',
+  timezone: 'Asia/Shanghai',
 })
 
 connection.connect(err => {

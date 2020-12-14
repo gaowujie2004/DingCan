@@ -8,19 +8,26 @@ const urlencoded = bodyParser.urlencoded({extended: false})
 /**
  * URL: /comment?sid=xxx
  * 参数: sid=xxx
+ * 分页 功能. 
 */
 router.get('/', async(req, response) => {
   let sid = req.query.sid
+  let page = req.query.page = 1  // 第几页
+  let num  = req.query.num = 10   // 每页多少条数据
+  let totalPage   // 总页数
+  let totalNum    // 总条数
 
   try {
-    let sqlStr = `select unickname,uimg,imglist,score,content,response,time from (shop_comment left join user on shop_comment.uid=user.uid) where sid=${sid}`
+    let sqlStr = `select _id as id,unickname,uimg,imglist,score,content,response,time from (shop_comment left join user on shop_comment.uid=user.uid) where sid=${sid} limit ${(page-1)*num}, ${num}`
     let { results } = await query(sqlStr)
-    // time - 这时是UTC格式
-    results.forEach(item => {
-      item.time = new Date(item.time).toLocaleString('chinese', { hour12: false })
-    })
-    response.send(results)
-    // console.log(results)
+    let { results: countData } = await query(`select count(*) as count from (shop_comment left join user on shop_comment.uid=user.uid) where sid=${sid}`)
+    totalNum = countData[0].count
+    totalPage = Math.ceil(totalNum / num)
+    
+
+    results.forEach(v => v.imglist=JSON.parse(v.imglist))
+    console.log(results)
+    response.send({ data:results, totalNum, totalPage })
   } catch(err) {
     response.statusCode = 400
     response.statusMessage = 'error'
