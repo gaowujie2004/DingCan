@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0,user-scalable=no'>
+<title>河职商家注册</title>
+<link rel="stylesheet" href="/public/layui-dist/css/layui.css">
+<script src="/public/layui-dist/layui.all.js"></script>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .father{
+        width: 100vw;
+        height: 80vh;
+        background-image: url("https://img.zcool.cn/community/01f6b65ee70890a8012066212f44d3.jpg@1280w_1l_2o_100sh.jpg");
+        background-size: 100% 100%;
+        padding-top: 20vh;
+    }
+    .enter{
+        width: 40vw;
+        height:60vh;
+        background-color: azure;
+        margin: 0 auto;
+        opacity: 0.8;
+        border-radius: 20px;
+        text-align: center;
+        padding-top: 2vh;
+    }
+    .input{
+        border-radius: 3px;
+        width: 15vw;
+        height: 3vh;
+        border: 2px solid #BDC1C4; 
+        background-color: rgba(0, 0, 0, 0);
+        margin-top: 2vh;
+        outline: none;
+    }
+    .btn{
+        width: 12vw;
+        height: 5vh;
+        border-radius: 10px;
+        border: 1px solid #00AAEE;
+        background-color: #00AAEE;
+        font-size: 22px;
+        font-weight: 580;
+        color: white;
+        margin-top: 6vh;
+        outline-color: #008AEE;    
+    }
+    .btn:hover{
+        background-color: #008AEE;
+    }
+
+</style>
+</head>
+<body>
+	<div class="father" id="app">
+		<form class="form" method="post"  enctype="multipart/form-data">
+			<div class="enter">                      
+				<h1 style="margin-top: 2vh;font-size: 27px;font-weight: 580;">商家注册</h1>
+				<div><span style="font-size: 25px;font-weight: 580;">&#x3000;&#x3000;&#x3000;用户名:&#x3000;</span>
+					<input @blur="unameBlur" v-model="unameVal" id="0" type="text" placeholder="输入用户名 6 ~ 20位" name="sname" class="input"><i class="layui-icon layui-icon-close" style="font-size: 25px;color: red;"></i><i class="layui-icon layui-icon-ok" style="font-size: 25px;color: green;display: none;"></i></div>
+				<div><span style="font-size: 25px;font-weight: 580;">&#x3000;&#x3000;&#x3000;密&#x3000;码:&#x3000;</span>
+					<input @blur="pwdBlur" v-model="pwdVal" id="2" type="password" placeholder="输入密码  6- 20位" class="input"><i class="layui-icon layui-icon-close" style="font-size: 25px;color: red;"></i><i class="layui-icon layui-icon-ok" style="font-size: 25px;color: green;display: none;"></i></div>
+				<div><span style="font-size: 25px;font-weight: 580;">&#x3000;&#x3000;确认密码:&#x3000;</span>
+					<input @blur="verifyBlur" v-model="verifyVal" id="4" type="password" placeholder="确认密码  2~10 位" name="spwd" class="input"><i class="layui-icon layui-icon-close" style="font-size: 25px;color: red;"></i><i class="layui-icon layui-icon-ok" style="font-size: 25px;color: green;display: none;"></i></div>
+				<div><span style="font-size: 25px;font-weight: 580;">&#x3000;&#x3000;店铺名称:&#x3000;</span>
+					<input @blur="shopNameBlur" v-model="shopNameVal" id="6" type="text" placeholder="输入店铺名称 2~10 位" name="shopname" class="input"><i class="layui-icon layui-icon-close" style="font-size: 25px;color: red;"></i><i class="layui-icon layui-icon-ok" style="font-size: 25px;color: green;display: none;"></i></div>
+				<div><span style="font-size: 25px;font-weight: 580;">店铺开设地点:&#x3000;</span>
+					<input @blur="canteenBlur" v-model="canteenVal" type="text" id="8" placeholder="输入地区3~10 位" name="scanteen" class="input"><i class="layui-icon layui-icon-close" style="font-size: 25px;color: red;;"></i><i class="layui-icon layui-icon-ok" style="font-size: 25px;color: green;display: none;"></i></div>
+				<div><span style="font-size: 25px;font-weight: 580;">添加店铺图片:&#x3000;&#x3000;</span>
+					<input @change="logoChange" type="file" class="File" name="slogo" id="" style="display: none;" multiple><div style="display: inline-block;width: 15vw;text-align: left;"><i class="layui-icon layui-icon-camera" style="font-size: 39px;"></i></div></div>
+				<div><span style="font-size: 25px;font-weight: 580;">&#x3000;&#x3000;店铺标语:&#x3000;</span>
+					<input @blur="loganBlur" v-model="loganVal" id="11" type="text" name="slogan" placeholder="输入店铺标语      0~20 位" class="input"><i class="layui-icon layui-icon-close" style="font-size: 25px;color: red;"></i><i class="layui-icon layui-icon-ok" style="font-size: 25px;color: green;display: none;"></i></div>
+				<button class="btn" @click="submitClick" type="button"><span>登录</span></button>
+			</div>
+		</form>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+	<script>
+		let app = new Vue({
+			el: '#app',
+			data: {
+				unameVal: '',
+				pwdVal: '',
+				verifyVal: '',
+				shopNameVal: '',
+				canteenVal: '',
+				logo: '',           // 特殊
+				showList: '',       // 特殊
+				loganVal: '',
+			},
+			methods: {
+				unameBlur(e) {
+					let name = this.unameVal
+					if (name.length>=6 && name.length<=20) {
+						axios
+							.get(`/user/sigincheck?sname=${name}`)
+							.then(val => {
+								if (Number(val.data) === 1) {
+									return layer.msg('用户可以使用')
+								}
+								layer.msg('用户名不能使用请更换')
+							})
+						return
+					}
+					layer.msg('6-20位的长度')
+				},
+				pwdBlur() {
+
+				},
+				verifyBlur() {
+
+				},
+				shopNameBlur() {
+
+				},
+				canteenBlur() {
+
+				},
+				logoChange() {
+
+				},
+				showListChange() {
+
+				},
+				loganBlur() {
+
+				},
+				submitClick() {
+					console.log('提交')
+				}
+			}
+		})
+	</script>
+</body>
+</html>

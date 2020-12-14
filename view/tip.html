@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0,user-scalable=no'>
+<link rel="stylesheet" href="/public/layui-dist/css/layui.css">
+<script src="/public/layui-dist/layui.js"></script>
+<title></title>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .allImg{
+        width: 100%;
+        height: 100%;
+    }
+    .all{
+        width: 100vw;
+        height: 100vh;
+    }
+    .logo{
+        width:37px;
+        height: 37px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    .logoSize{
+        height:2vw;
+        text-align: center;
+        font-size: 15px;
+        font-weight: 700;
+        /* position: absolute;
+        top: 0px;
+        margin-left: 13vw;
+        margin-top: 2vh; */
+        color: #E2EEFF;
+        padding-left: 5px;
+    }
+    .center{
+        width: 50vw;
+        height: 20vh;
+        margin: 0 auto;
+        color: #E2EEFF;
+        position: absolute;
+        top: 0px;
+        margin-left: 25vw;
+        margin-top: 25vh;
+    }
+    .flex{
+        display: flex;
+         position: absolute;
+        top: 0px;
+        margin-left: 10vw;
+        margin-top: 2vh;
+    }
+    .flexs{
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+    }
+    .allImg1{
+        flex: 0 0 100%;
+        transition-duration:1s;
+    }
+</style>
+</head>
+<body>
+    <div class="all">
+        <div class="flexs">
+        <img class="allImg allImg1" src="https://img.alicdn.com/tps/TB1h9xxIFXXXXbKXXXXXXXXXXXX.jpg" alt="">
+        <img class="allImg allImg1" src="https://img.alicdn.com/tps/TB1sXGYIFXXXXc5XpXXXXXXXXXX.jpg" alt="">
+        <img class="allImg allImg1" src="https://img.alicdn.com/tps/TB1pfG4IFXXXXc6XXXXXXXXXXXX.jpg" alt="">
+        </div>
+        <div class="flex">
+            <div class="logo"><img class="allImg" src="/public/img/logo.jpg" alt=""></div>
+            <div class="logoSize">
+                <span>预订餐</span>
+                <p style="font-size: 11px;font-weight: 0;">reserve</p>
+            </div>
+        </div>
+      
+        <div class="center">
+            <div style="font-size: 40px;text-align: center;"><h1>河&#x2000;职&#x2000;预&#x2000;订&#x2000;餐</h1></div>
+            <div style="text-align: center; margin-top: 2vh;font-size: 20px; font-weight: 700;"><h3>加&#x2000;入&#x2000;我&#x2000;们&#x2000;共&#x2000;创&#x2000;餐&#x2000;桌&#x2000;文&#x2000;化</h3></div>
+            <div style="display: flex;justify-content:space-around;margin-top: 60px;">
+                <div onclick="location.href='/sigin'" style="width: 188px;height: 50px;cursor: pointer; background-color:#00AAEE ;border-radius: 6px;line-height: 50px;"><i style="border-radius: 50%;padding: 1px;border: 1px solid #CEEFFC; margin-left: 20px;font-size: 16px;"  class="layui-icon layui-icon-user"></i><span style="margin-left: 30px">成为商家</span></div>
+                <div onclick="location.href='/login'" style="width: 188px;height: 50px;cursor: pointer; background-color:#00AAEE ;border-radius: 6px;line-height: 50px;"><i style="border-radius: 50%;padding: 1px;border: 1px solid #CEEFFC; margin-left: 20px;font-size: 16px;"  class="layui-icon layui-icon-user"></i><span style="margin-left: 30px">商家登录</span></div>
+            </div>
+        </div>
+    </div>
+<script>
+    var Img=document.querySelectorAll('.allImg1');
+    var yd=100;
+    function ds() {
+    setInterval(function() {
+        var vw='-'+yd+'vw';
+        var back=Number(yd-100)+'vw';
+        if(yd==100){   
+        Img[0].style.marginLeft=vw;
+        }
+        if(yd==200){   
+        Img[0].style.marginLeft=vw;
+        }
+        // if(yd==300){   
+        // Img[0].style.marginLeft=vw;
+        // console.log(vw)
+        // }
+        if(yd==300){   
+        Img[0].style.marginLeft='-100vw';
+        }
+        if(yd==400){   
+        Img[0].style.marginLeft='0';
+        }
+        yd+=100
+        if(yd==500){
+            yd==100
+        }
+
+ }, 3000);
+}
+ds();
+</script>
+</body>
+</html>

@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>河职预订餐首页</title>
-  <link rel="stylesheet" href="../public/layui-dist/css/layui.css">
-  <link rel="stylesheet" href="../public/css/public.css">
-  <link rel="stylesheet" href="../public/css/home.css">
-  <link rel="stylesheet" href="../public/css/order.css">
+  <link rel="stylesheet" href="/public/layui-dist/css/layui.css">
+  <link rel="stylesheet" href="/public/css/public.css">
+  <link rel="stylesheet" href="/public/css/home.css">
+  <link rel="stylesheet" href="/public/css/order.css">
   <link rel="stylesheet" href="http://at.alicdn.com/t/font_2267194_9655sgw1wvg.css">
 </head>
 <body>
@@ -15,7 +15,7 @@
   <div class="top-head">
     <div class="top-head-l">
       <div class="top-head-logo">
-        <img class="" src="../public/img/logo.jpg" alt="">
+        <img class="" src="/public/img/logo.jpg" alt="">
         <div>&nbsp;河职商家</div>
       </div>
       <div class="top-logo-bottom" style="padding-left: 6px;padding-top: 3px;">
@@ -28,7 +28,7 @@
       <div class="top-head-full iconfont icon-screen-full"></div>
       <div class="top-head-profile">
         <div class="profile-icon">
-          <img src="../public/img/avg.svg" alt="">
+          <img src="/public/img/default.jpg" style="border-radius: 50%;" alt="">
         </div>
         <div class="profile-name">高武杰</div>
         <div class="profile-down layui-icon layui-icon-down"></div>
@@ -207,12 +207,14 @@
         <table id="menu-content-table" class="menu-content-table" lay-filter="menu-content-table"> 
         </table>
       </li>
-      <li class="comment-content">
+      <li class="comment-content show">
         <table id="comment-content-table" class="comment-content-table" lay-filter="comment-content-table"> 
         </table>
       </li>
-      <li class="shopinfo-content show">
-        商家信息
+      <li class="shopinfo-content">
+        
+
+
       </li>
     </ul>
   </div>
@@ -220,8 +222,8 @@
 
   <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
   <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
-  <!-- <script src="/public/layer_mobile/layer.js"></script> -->
-  <script src="../public/layui-dist/layui.js"></script>
+
+  <script src="/public/layui-dist/layui.js"></script>
   <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.0.0-rc.3/echarts.min.js"></script>
 
   <!-- 菜单模板 -->
@@ -249,10 +251,13 @@
     {{#  } }}
   </script>
   <script type="text/html" id="commentTool">
-    <a class="layui-btn layui-btn-xs" lay-event="xj">修改回复</a>
+    <a class="layui-btn layui-btn-xs" lay-event="xj">回复顾客</a>
   </script>
 
+  
+
   <script>
+    // 首页预览
     ;(async function(){
       let { data: resData } = await axios.get('http://127.0.0.1:2020/home/income?sid=5&month=11')
       let dateList = resData.map(v => {
@@ -523,7 +528,7 @@
           { field: 'id', title: 'ID',},
           { field: 'score', title: '评分', sort: true},
           { field: 'unickname', title: '用户昵称', },
-          { field: 'uimg', title: '用户头像', templet: '#commentImg' },
+          // { field: 'uimg', title: '用户头像', templet: '#commentImg' },
           { field: 'imglist', title: '评论图片', templet: '#commentImgList'},
           { field: 'content', title: '评论内容'},
           { field: 'response', title: '商家回复', edit: true},
@@ -559,6 +564,7 @@
     })
 
     // 商家信息
+
     
 
   </script>

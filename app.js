@@ -11,12 +11,26 @@ const infoRouter = require('./router/infoRouter')
 const testRouter = require('./router/testRouter')
 
 const app = express()
+// CORS
 app.use((req,res,next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   next()
 })
-app.use('/public', express.static( path.join(__dirname, 'public') ))
 
+// 页面路由
+app.get('/', (req, res) => {
+  res.sendFile(path.join( __dirname, 'view/tip.html'))
+})
+app.get('/login', (req, res) => {
+  res.sendFile(path.join( __dirname, 'view/login.html'))
+})
+app.get('/sigin', (req, res) => {
+  res.sendFile(path.join( __dirname, 'view/sigin.html'))
+})
+
+
+// API路由中间件
+app.use('/public', express.static( path.join(__dirname, 'public') ))
 app.use('/', indexRouter)
 app.use('/user', userRouter)
 app.use('/home', homeRouter)
