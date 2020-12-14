@@ -49,7 +49,6 @@ userRouter.post('/sigin', siginUpload, (req, response, next) => {
 			response.send('0')
 		}, response)
 	}, response)
-	
 })
 
 //登录
@@ -60,8 +59,7 @@ userRouter.post('/login', function(req,res){
         if(success.length === 1){
             res.send("1")
         }else{
-						res.send("0")
-						consol
+            res.send("0")   
         }
     }, res)
 });

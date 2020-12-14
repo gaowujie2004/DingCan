@@ -6,16 +6,12 @@ var connection = mysql.createConnection({
     timezone: 'Asia/Shanghai',
 })
  var Mysql = function(order,back){
-     console.log(order)
-    //  console.log(connection)
+
     connection.query(order,function (err,data) {
         if (err) {
             console.log("数据拿取失败", err)
             back({})
         }else{
-            // connection.end();
-            // back(data)  
-            console.log(data)
             back(data)
         }
     })

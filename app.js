@@ -7,6 +7,7 @@ const homeRouter = require('./router/homeRouter2')
 const orderRouter = require('./router/orderRouter')
 const menuRouter = require('./router/menuRouter')
 const commentRouter = require('./router/commentRouter')
+const infoRouter = require('./router/infoRouter')
 const testRouter = require('./router/testRouter')
 
 const app = express()
@@ -22,6 +23,7 @@ app.use('/home', homeRouter)
 app.use('/order', orderRouter)
 app.use('/menu', menuRouter)
 app.use('/comment', commentRouter)
+app.use('/info', infoRouter)
 app.use('/test', testRouter)
 
 app.listen(2020, () => {
