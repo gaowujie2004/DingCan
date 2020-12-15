@@ -159,13 +159,6 @@ router.get('/order', (req, response) => {
       response.statusMessage = 'database query error'
       return 
     }
-    
-    res = res.map(item => {
-      let time = new Date(item.time).toLocaleString('chinese', { hour12: false })
-          time = time.replace(/\//g, '-')
-      
-      return { time, uname: item.uname, mname: item.mname }
-    })
     response.send(res)
   })
 

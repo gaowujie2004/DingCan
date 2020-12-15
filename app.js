@@ -21,11 +21,17 @@ app.use((req,res,next) => {
 app.get('/', (req, res) => {
   res.sendFile(path.join( __dirname, 'view/tip.html'))
 })
+app.get('/index', (req, res) => {
+  res.sendFile(path.join( __dirname, 'view/index.html'))
+})
 app.get('/login', (req, res) => {
   res.sendFile(path.join( __dirname, 'view/login.html'))
 })
 app.get('/sigin', (req, res) => {
   res.sendFile(path.join( __dirname, 'view/sigin.html'))
+})
+app.get('/test', (req, res) => {
+  res.sendFile(path.join( __dirname, 'view/test.html'))
 })
 
 

@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="http://at.alicdn.com/t/font_2267194_9655sgw1wvg.css">
 </head>
 <body>
-
+  <div id="app">
   <!-- 顶部  Start -->
   <div class="top-head">
     <div class="top-head-l">
@@ -23,9 +23,9 @@
       </div>
     </div>
     <div class="top-head-r">
-      <div class="top-head-toleft iconfont icon-to-left">
+      <div class="top-head-toleft iconfont" :class="{'icon-to-left': !isShrink, 'icon-to-right': isShrink}" @click="shrink">
       </div>
-      <div class="top-head-full iconfont icon-screen-full"></div>
+      <div class="top-head-full iconfont" :class="{'icon-screen-full': !isScreenFull, 'icon-screen-restore': isScreenFull}" @click="screenFull"></div>
       <div class="top-head-profile">
         <div class="profile-icon">
           <img src="/public/img/default.jpg" style="border-radius: 50%;" alt="">
@@ -42,44 +42,44 @@
 
   <!-- 主体 Start -->
   <div class="main">
-    <ul class="main-nav">
-      <li>
+    <ul class="main-nav" :style="navWidthStyle">
+      <li :class="{'nav-item-click': navCurrentIndex===0}" @click="navClick(0)">
         <span class="nav-icon layui-icon layui-icon-home"></span>
-        <span>首页预览</span>
+        <span v-show="!isShrink">首页预览</span>
       </li>
-      <li>
+      <li :class="{'nav-item-click': navCurrentIndex===1}" @click="navClick(1)">
         <span class="nav-icon iconfont icon-orders"></span>
-        <span>订单管理</span>
+        <span v-show="!isShrink">订单管理</span>
       </li>
-      <li  class="nav-item-click">
+      <li  :class="{'nav-item-click': navCurrentIndex===2}" @click="navClick(2)">
         <span class="nav-icon iconfont icon-caipinbaobiao"></span>
-        <span>菜单管理</span>
+        <span v-show="!isShrink">菜单管理</span>
       </li>
-      <li>
+      <li :class="{'nav-item-click': navCurrentIndex===3}" @click="navClick(3)">
         <span class="nav-icon iconfont icon-pinglun1"></span>
-        <span>评论管理</span>
+        <span v-show="!isShrink">评论管理</span>
       </li>
-      <li>
+      <li :class="{'nav-item-click': navCurrentIndex===4}" @click="navClick(4)">
         <span class="nav-icon iconfont icon-profile"></span>
-        <span>商家信息</span>
+        <span v-show="!isShrink">商家信息</span>
       </li>
     </ul>
     <ul class="main-content px-big py">
-      <li class="home-content">
+      <li class="home-content" :class="{show: navCurrentIndex===0}">
         <div class="home-content-title text-mb">
           <h3 style="margin-bottom:0;">商家信息</h3>
-          <span class="">数据更新于 2020-6-21 15:29:00</span>
+          <span class="">数据更新于 {{new Date().toLocaleString('chinese', { hour12: false }).replace(/\//g,'-')}}</span>
         </div>
         <div class="home-content-row">
           <!-- BIG  Start -->
           <div class="home-content-card-big home-content-card">
             <h3 class="total-tit">交易额</h3>
-            <p class="number">
-              <span style="font-size: 24px;">￥</span><span style="font-size: 40px;">8999.00</span>
+            <p class="number" :class="{'number-change': isOrderChange}">
+              <span style="font-size: 24px;">￥</span><span style="font-size: 40px;">{{btnIsMonth ? monthIncome:nowIncome}}</span>
             </p>
             <div>
-              <div class="btn btn-click">今日</div>
-              <div class="btn">本月</div>
+              <div class="btn" :class="{'btn-click': !btnIsMonth}" @click="btnIsMonth=false">今日</div>
+              <div class="btn" :class="{'btn-click': btnIsMonth}" @click="btnIsMonth=true">本月</div>
             </div>
           </div>
           <!-- BIG End -->
@@ -90,9 +90,9 @@
               <div class="icon-row">
                 <div class="icon-left iconfont icon-orders"></div>
                 <div class="icon-right">
-                  <div class="number">69</div>
+                  <div class="number">{{totalOrderNum}}</div>
                   <p class="rate-row">
-                    <span class="rate-number rate-decrease">-1</span>
+                    <span class="rate-number" :class="{'rate-decrease':nowOrderNum<=0, 'number-change':isOrderChange }">{{nowOrderNum>=0 ? '+':'-'}}{{nowOrderNum}}</span>     <!-- rate-number 是增长  rate-decrease 是下降 -->
                     <span class="rate-text">同比昨日</span>
                   </p>
                 </div>
@@ -104,9 +104,9 @@
                 <div class="icon-row">
                   <div class="icon-left iconfont icon-like"></div>
                   <div class="icon-right">
-                    <div class="number">69</div>
+                    <div class="number">{{totalLikeNum}}</div>
                     <p class="rate-row">
-                      <span class="rate-number">+1.6%</span>
+                      <span class="rate-number" :class="{'rate-decrease': nowLikeNum<=0, 'number-change':isLikeChange}">{{nowLikeNum>=0 ? '+':'-'}}{{nowLikeNum}}</span>     <!-- rate-number 是增长  rate-decrease 是下降 -->
                       <span class="rate-text">同比昨日</span>
                     </p>
                   </div>
@@ -119,9 +119,9 @@
                 <div class="icon-row">
                   <div class="icon-left iconfont icon-browser"></div>
                   <div class="icon-right">
-                    <div class="number">69</div>
+                    <div class="number">{{totalBrowserNum}}</div>
                     <p class="rate-row">
-                      <span class="rate-number">+1.6%</span>
+                      <span class="rate-number" :class="{'rate-decrease': nowBrowserNum<=0, 'number-change': isBrowserChange}">{{nowBrowserNum>=0 ? '+':'-'}}{{nowBrowserNum}}</span>     <!-- rate-number 是增长  rate-decrease 是下降 -->
                       <span class="rate-text">同比昨日</span>
                     </p>
                   </div>
@@ -132,10 +132,11 @@
             <div class="home-group-row home-group-row-last home-content-card">
               <h3 style="margin-bottom: 0;">订单动态</h3>
               <div>
-                <p>2020-06-12 15:41:21 用户“高武杰” 提交了订单</p>
-                <p>2020-06-12 15:41:21 用户“高武杰” 提交了订单</p>
+                <p v-for="(item,index) of curOrderList" :key="index" :class="{ 'number-change':isOrderChange }">
+                  {{item.time | timeFormat }} 用户“{{item.uname}}” 预定了{{item.mname}}
+                </p>
               </div>
-              <div class="refresh layui-icon layui-icon-refresh" title="刷新"></div>
+              <div class="refresh layui-icon layui-icon-refresh" title="刷新" @click="orderRefresh"></div>
             </div>
           </div>
         </div>
@@ -199,32 +200,31 @@
           </div>
         </div>
       </li>
-      <li class="order-content">
+      <li class="order-content" :class="{show: navCurrentIndex===1}">
         <table id="order-content-table" class="order-content-table">
         </table>
       </li>
-      <li class="menu-content">
+      <li class="menu-content" :class="{show: navCurrentIndex===2}">
         <table id="menu-content-table" class="menu-content-table" lay-filter="menu-content-table"> 
         </table>
       </li>
-      <li class="comment-content show">
+      <li class="comment-content" :class="{show: navCurrentIndex===3}">
         <table id="comment-content-table" class="comment-content-table" lay-filter="comment-content-table"> 
         </table>
       </li>
-      <li class="shopinfo-content">
-        
-
-
+      <li class="shopinfo-content" :class="{show: navCurrentIndex===4}">
+        xxxxxxxx
       </li>
     </ul>
   </div>
   <!-- 主体 End -->
+</div> 
 
-  <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
-
-  <script src="/public/layui-dist/layui.js"></script>
-  <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.0.0-rc.3/echarts.min.js"></script>
+  <script src="/public/layui-dist/layui.all.js"></script>
+  <!-- <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.0.0-rc.3/echarts.min.js"></script> -->
+  <script src="/public/js/index.js"></script>
 
   <!-- 菜单模板 -->
   <script type="text/html" id="barDemo">

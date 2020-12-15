@@ -68,7 +68,8 @@ router.get('/base', async (req, response) => {
       totalLikeNum = values[4].results[0].total
     }
     if (values[5].results.length > 0) {
-      nowLikeNum = values[4].results[0].num
+      nowLikeNum = values[5].results[0].num
+      console.log(values[5], '今日 点赞数')
     }
 
     // 浏览量 6 7
@@ -101,14 +102,7 @@ router.get('/order', async (req, response) => {
   const sid = Number(req.query.sid)
 
   let { results } = await query(`select time, uname, mname from shop_order where sid=${sid} order by time desc limit 2`)
-
-  // 时间需要转换一下
-  let res = results.map(item => {
-    let time = new Date(item.time).toLocaleString('chinese', { hour12: false }).replace(/\//g, '-')
-    return { time, uname: item.uname, mname: item.mname }
-  })
-
-  response.send(res)  
+  response.send(results)  
 })
 
 /**
