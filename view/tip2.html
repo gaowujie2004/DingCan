@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云订餐APP - 首页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            height: 100vh;
+            position: relative;
+        }
+        .nav {
+            width: 100%;
+            height: 60px;
+            position: fixed;
+            top: 0;
+        }
+
+        .nav>div {
+            width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            padding-top: 15px;
+        }
+
+        .nav>div>img {
+            width: 60px;
+            height: 60px;
+        }
+        .nav>div>div {
+            
+            padding-left: 1em;
+            width: 180px;
+            height: 60px;
+            color: rgb(247, 245, 245);
+            letter-spacing: 2px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .nav p {
+            font-size: 24px;
+        }
+        .nav span {
+            font-size: 11px;
+            text-shadow: 0 0 15px rgba(0,0,0,.23);
+        }
+        /* .wrap>img {
+            width: 100%;
+        } */
+        .wrap span {
+            letter-spacing: 3px;
+        }
+        .wrap>div{
+            width: 100%;
+            height: 600px;
+            background-image: url('https://p0.meituan.net/travelcube/d2ab674fa0e4c875865e524d82fe15a34372569.png');
+            background-repeat: no-repeat;
+            background-size: 100%;
+        }
+        .wrap>div>div{
+            border: 1px solid red;
+            /* width: 340px; */
+            height: 190px;
+            position: absolute;
+            top: 210px;
+            left: 265px;
+
+            font-size: 52px;
+            color: #fff;
+            font-weight: 700;
+            background: pink;
+        }
+        .main{
+            width: 1000px;
+            position: absolute;
+            height: 170px;
+            bottom:0px;
+            left: 280px;
+            display: flex;
+            align-items: center;
+            
+        }
+        .main>div{
+            height: 170px;
+            width: 333px;
+            display: flex;
+            align-items: center;
+            position: absolute;
+            bottom: 0px;
+        }
+        .main>div>div>h3>img{
+            width: 30px;
+            height: 30px;
+        }
+        .first_main {
+            cursor: pointer;
+            transition: height .2s;
+        }
+        .first_main>div{
+            width: 100%;
+        }
+        .first_main>div>h3{
+            justify-content: center;
+            display: flex;
+        }
+        .first_main>div>p{
+            margin-top: 10px;
+            font-size: 16px;
+            text-align: center;
+            color: white;
+        }
+        .first_main>div>h3>div{
+            margin-right: 10px;
+            margin-left: 10px;
+            font-size: 26px;
+            font-weight: 400;
+            color: white;
+        }
+        .main>div:nth-child(1){
+            background-color: #658FF7;
+        }
+        .main>div:nth-child(2){
+            background-color: #F54C45;
+            left: 333px;
+        }
+        .main>div:nth-child(3){
+            background-color: #FFBD27;
+            left: 666px;
+        }
+        .tit-text {
+            font-size: 26px !important;
+        }
+        .detail-text {
+            color: hsla(0,0%,100%,.9) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+    </script>
+    <div class="nav">
+        <div>
+            <img src="/public/img/logo.jpg" alt="" style="border-radius: 50%;">
+            <div>
+                <p>云订餐 APP</p>
+                <span>在线预定餐 方便你我他</span>
+            </div>
+        </div>
+    </div>
+    <div class="wrap">
+        <div>
+            <div>
+                <span>在线预订</span>
+                <br>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;方便你我</span>
+            </div>
+           
+        </div>
+    </div>
+    <div class="main">
+        <div class="first_main"  onclick="location.href = '/sigin'">
+            <div>
+                <h3 class="tit-text">
+                    <img src="/public/img/商家.png">
+                    <div>成为商家 </div>
+                    <img src="/public/img/括号.png" style="width: 15px;height: 15px;margin-top: 12px;">
+                </h3>
+                <p class="detail-text">填写资料、登录账号、坐等收益</p>
+            </div>
+        </div>
+        <div class="first_main" onclick="location.href = '/login'">
+            <div>
+                <h3>
+                    <img src="/public/img/文件.png">
+                    <div>商家登录 </div>
+                    <img src="/public/img/括号.png" style="width: 15px;height: 15px;margin-top: 12px;">
+                </h3>
+                <p class="detail-text">查看收益、管理订单、评论</p>
+            </div>
+        </div>
+        <div class="first_main" onclick="location.href = '/test'">
+            <div>
+                <h3>
+                    <img src="/public/img/刀叉.png">
+                    <div>顾客端 </div>
+                    <img src="/public/img/括号.png" style="width: 15px;height: 15px;margin-top: 12px;">
+                </h3>
+                <p class="detail-text">预览顾客端</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        var main=document.getElementsByClassName('first_main');
+        console.log(main);
+        for(var i=0;i<main.length;i++){
+            main[i].onmouseover=function(){
+                this.style.height='180px';
+            }
+            main[i].onmouseout=function(){
+                this.style.height='170px';
+            }
+            
+        }
+    </script>
+</body>
+
+</html>

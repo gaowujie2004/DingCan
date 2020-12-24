@@ -4,7 +4,6 @@ var mysql=require("../utils/mysql/mysql");
 var multer=require('multer');
 var upload=multer({dest:'./public/img/user'});
 var bodyParser = require('body-parser')
-var fs = require('fs');
 
 var userRouter = express.Router();
 var urlencoded = bodyParser.urlencoded({extended: false});
@@ -20,7 +19,7 @@ var upload = multer({ storage: storage })
 
 userRouter.use(urlencoded)
 
-var siginUpload = upload.fields([{name: 'logo'}, {name: 'showList'}])
+var siginUpload = upload.fields([{name: 'slogo'}, {name: 'showlist'}])
 
 // 注册
 userRouter.post('/sigin', siginUpload, (req, response, next) => {
@@ -30,9 +29,10 @@ userRouter.post('/sigin', siginUpload, (req, response, next) => {
 		shopname,
 		scanteen,
 		slogan
-	} = req.body
-	let slogo = path.posix.join('/public/img/user', req.files.logo[0].filename)
-	let showList = req.files.showList.map(v => `/public/img/user/${v.filename}`)
+    } = req.body
+
+	let slogo = path.posix.join('/public/img/user', req.files.slogo[0].filename)
+	let showList = req.files.showlist.map(v => `/public/img/user/${v.filename}`)
 	
 	let sqlStr1 = `insert into shopkeeper(sname,spwd,scanteen, shopname,slogo,slogan) values('${sname}', '${spwd}','${shopname}', '${scanteen}', '${slogo}','${slogan}')`
 
@@ -57,12 +57,22 @@ userRouter.post('/login', function(req,res){
 		var spwd = req.body.spwd
     mysql(`select sid from shopkeeper where sname='${sname}' and spwd='${spwd}'`,function (success) {
         if(success.length === 1){
+            req.session.sid = success[0].sid
+            req.session.isLogin = true
             res.send("1")
+            
         }else{
             res.send("0")   
         }
     }, res)
 });
+
+// 用户退出.
+userRouter.post('/exit', function(req, res){
+    req.session.destroy(e => {
+        res.send('1')
+    })
+})
 
 // 用户名检测
 userRouter.get('/sigincheck', (req, response) => {
@@ -81,6 +91,22 @@ userRouter.get('/sigincheck', (req, response) => {
         }, response)
     } catch(err) {
         response.send('error', err)
+    }
+})
+
+// 信息
+userRouter.get('/info', (req, response) => {
+    try {
+        let sid = req.query.sid
+        mysql(`select shopname as sname, slogo as simg from shopkeeper where sid = ${sid}`, function(res){
+            let mname =  res[0].sname
+            let mimg = res[0].simg 
+        
+            console.log(res)
+            response.send({mname, mimg})
+        }, response)
+    } catch(err) {
+        response.send('500')
     }
 })
 

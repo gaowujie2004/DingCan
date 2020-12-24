@@ -1,5 +1,7 @@
 const express = require('express')
 const path = require('path')
+const session = require('express-session')
+const mysqlStore = require('express-mysql-session')(session)
 
 const userRouter = require('./router/userRouter')
 const indexRouter = require('./router/indexRouter')
@@ -16,23 +18,63 @@ app.use((req,res,next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   next()
 })
+const HOUR = 1000 * 60 * 60 // hour 毫秒数
+const sessionMysqlOptions = {
+  host: 'localhost',
+  user: 'root',
+  password: 'root',
+  database: 'project'
+}
+const sessionStore = new mysqlStore(sessionMysqlOptions)
+const sessionOptions = {
+  secret: 'haah BBB-gwj',
+  key: 'gwj_sid',
+  resave: true,
+  saveUninitialized: false,
+  store: sessionStore,
+  cookie: { 
+    maxAge: HOUR*24*7,
+    httpOnly: true,
+    path: '/'
+  }
+}
+app.use(session(sessionOptions))
+
+// 权限控制
+app.use((req,res,next) => {
+  if (req.session.isLogin) {
+    req.query.sid = req.session.sid
+  } else {
+    req.query.sid = -1
+  }
+  next()
+})
+
 
 // 页面路由
 app.get('/', (req, res) => {
-  res.sendFile(path.join( __dirname, 'view/tip.html'))
+  res.sendFile(path.join( __dirname, 'view/tip2.html'))
 })
 app.get('/index', (req, res) => {
-  res.sendFile(path.join( __dirname, 'view/index.html'))
+  if (req.session.isLogin) {
+    res.sendFile(path.join( __dirname, 'view/index.html'))
+  } else {
+    res.redirect(302, '/')
+  }
+  
 })
 app.get('/login', (req, res) => {
-  res.sendFile(path.join( __dirname, 'view/login.html'))
+  if (req.session.isLogin) {
+    res.sendFile(path.join( __dirname, 'view/index.html'))
+  } else {
+    res.sendFile(path.join( __dirname, 'view/login.html'))
+  }
+  
 })
 app.get('/sigin', (req, res) => {
   res.sendFile(path.join( __dirname, 'view/sigin.html'))
 })
-app.get('/test', (req, res) => {
-  res.sendFile(path.join( __dirname, 'view/test.html'))
-})
+
 
 
 // API路由中间件

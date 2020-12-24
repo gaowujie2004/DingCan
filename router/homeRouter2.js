@@ -69,7 +69,6 @@ router.get('/base', async (req, response) => {
     }
     if (values[5].results.length > 0) {
       nowLikeNum = values[5].results[0].num
-      console.log(values[5], '今日 点赞数')
     }
 
     // 浏览量 6 7
@@ -118,6 +117,8 @@ router.get('/income', async (req, response) => {
 
   let { results } = await query(`select sum(price) as dayprice,day(time) as daytime from shop_order where sid=${sid} and year(time)='${year}' and month(time)='${month}' group by date(time) order by time asc`)
   response.send(results)
+
+  console.log(sid, 'sid----------------------')
 })
 
 /**

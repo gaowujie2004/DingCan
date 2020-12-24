@@ -3,7 +3,7 @@
 <head>
 <meta charset='UTF-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0,user-scalable=no'>
-<title>河南商家登录</title>
+<title>云订餐 - 商家登录</title>
 <link rel="stylesheet" href="/public/layui-dist/css/layui.css">
 <script src="/public/layui-dist/layui.all.js"></script>
 <style>
@@ -14,91 +14,142 @@
     .father{
         width: 100vw;
         height: 73vh;
-        /* background-image: linear-gradient(90deg,#1C1D22,#CDEAF2); */
-        background-image: url("https://img.zcool.cn/community/01f6b65ee70890a8012066212f44d3.jpg@1280w_1l_2o_100sh.jpg");
+        background-image: url('http://zhouxunwang.cn/sucai/201810282246_7113/images/login.jpg');
         background-size: 100% 100%;
         padding-top: 27vh;
     }
     .enter{
-        width: 40vw;
-        height:44vh;
-        background-color: azure;
-        opacity: 0.8;
-        margin: 0 auto;
-        border-radius: 20px;
-        text-align: center;
-        padding-top: 2vh;
-    }
-    /* .i{
-        position: absolute;
-        top: 305px;
-    }
-    .i1{
-        position: absolute;
-        top: 47vh;
-    } */
-    .input{
-        border-radius: 3px;
-        width: 15vw;
-        height: 3vh;
-        border: 2px solid #BDC1C4; 
-        background-color: rgba(0, 0, 0, 0);
-        margin-top: 4vh;
-        outline: none;
+    width: 500px;
+    height: 500px;
+    top: 50%;
+    left: 50%;
+    color: black;
+    margin-top: -250px;
+    margin-left: -250px;
+    position: fixed;
+    border-radius: 10px;
+    z-index: 9999;
+    background: #FFFFFF;
+    opacity: 0.7;
+    box-shadow: 5px 5px 10px 5px rgb(0 0 0 / 50%);
+    text-align: center;
     }
     .btn{
-        width: 12vw;
-        height: 5vh;
-        border-radius: 10px;
-        border: 1px solid #00AAEE;
-        background-color: #00AAEE;
-        font-size: 22px;
-        font-weight: 580;
-        color: white;
-        margin-top: 6vh;
-        outline-color: #008AEE;    
+    margin-top: 40px;
+    margin-left:11%;
+    border: 0px;
+    width: 200px;
+    height: 40px;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
     }
     .btn:hover{
         background-color: #008AEE;
     }
-
+    .fontSize{
+    width: 33%;
+    text-align: right;
+    height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    }
+    .fontInput{
+        width: 50%;
+        height: 40px;
+        padding: 0px;
+    }
+    .input{
+    font-size: 12px;
+    height: 40px;
+    outline: 0px;
+    border-radius: 10px;
+    border: 1px solid #CCCCCC;
+    width: 95%;
+    margin-left: 15px;
+    }
+    h1{
+        text-align: center;
+    font-size: 35px;
+    margin-top: 30px;
+    letter-spacing: 5px;
+    font-weight: bold;
+    }
+    .bottom{
+        margin-top: 118px;
+        margin-left: 20px;
+    }
+    .btn1{
+    border: 0px;
+    background: transparent;
+    outline: 0px;
+    }
+    .fontTop{
+        display: flex;
+        margin-top: 80px;
+    }
+    .fontTop1{
+        display: flex;
+        margin-top: 40px;
+    }
 </style>
 </head>
 <body>
-	<div class="father" id="app">
+    <div class="father" id="app">
+        <form action="" method="post">
+        <div class="enter">
+            <h1>登录</h1>
+            <div class="fontTop">
+                <div class="fontSize">用户名:</div>
+                <div class="fontInput">
+                    <input class="input" v-model.lazy="snameVal" placeholder="  用户名/手机号" type="text" name="sname">
+                </div>
+            </div>
+            <div class="fontTop1">
+                <div class="fontSize">密&#x3000;码:</div>
+                <div class="fontInput">
+                    <input class="input" v-model="spwdVal" placeholder="  密码" type="text" name="spwd">
+                </div>
+            </div>
+            <button class="btn" type="button" @click="submitClick"><span>登录</span></button>
+            <div class="bottom">
+            <button class="btn1">没有账号?前往注册</button>
+            </div>
+        </div>
+        </form>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+<script>
+    let app = new Vue({
+        el: '#app',
+        data: {
+            snameVal: '',
+            spwdVal: '',
+        },
+        methods: {
+            submitClick() {
+                console.log('执行了')
+                let name = this.snameVal.trim()
+                let spwd = this.spwdVal.trim()
 
-		<div class="enter">
-			<h1 style="margin-top: 2vh;font-size: 27px;font-weight: 580;">登录</h1>
-			<div><span style="font-size: 25px;font-weight: 580;">用户名:&#x3000;</span><input type="text" name="uname" class="input" v-model.lazy="snameVal"><i class="layui-icon layui-icon-close" style="font-size: 3vh;color: red;"></i></i></div>
-			<div><span style="font-size: 25px;font-weight: 580;">密&#x3000;码:&#x3000;</span><input type="text" name="upwd" class="input" v-model="spwdVal"><i class="layui-icon layui-icon-close" style="font-size: 3vh;color: red;"></i></div>
-			<button class="btn" type="button" @click="submitClick"><span>登录</span></button>
-		</div>
-
-	</div>
-    
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
-	<script>
-		let app = new Vue({
-			el: '#app',
-			data: {
-				snameVal: '',
-				spwdVal: ''
-			},
-			methods: {
-				submitClick() {
-					axios
-						.post('/user/login', `sname=${this.snameVal}&spwd=${this.spwdVal}`)
-						.then(val => {
-							if (Number(val.data) ===1) {
-								layer.msg('登录成功')
-								return location.href = '/index'
-							}
-							layer.msg('密码错误')
-						})
-				}
-			}
-		})
-	</script>
+                if (name.length && spwd.length) {
+                    axios
+                        .post('/user/login', `sname=${name}&spwd=${spwd}`)
+                        .then(val => {
+                            if (Number(val.data) === 1) {
+                                return location.href = '/index'
+                            }
+                            layer.msg('账号和密码不匹配')
+                        })
+                    return 
+                }
+                layer.msg('登录失败, 重试')
+            }
+        },
+    })
+</script>
 </body>
 </html>

@@ -12,8 +12,8 @@ const urlencoded = bodyParser.urlencoded({extended: false})
 */
 router.get('/', async(req, response) => {
   let sid = req.query.sid
-  let page = req.query.page = 1  // 第几页
-  let num  = req.query.num = 10   // 每页多少条数据
+  let page = req.query.page || 1  // 第几页
+  let num  = req.query.num || 10   // 每页多少条数据
   let totalPage   // 总页数
   let totalNum    // 总条数
 
@@ -26,7 +26,6 @@ router.get('/', async(req, response) => {
     
 
     results.forEach(v => v.imglist=JSON.parse(v.imglist))
-    console.log(results)
     response.send({ data:results, totalNum, totalPage })
   } catch(err) {
     response.statusCode = 400

@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="/public/css/public.css">
   <link rel="stylesheet" href="/public/css/home.css">
   <link rel="stylesheet" href="/public/css/order.css">
-  <link rel="stylesheet" href="/public/css/menu.css">
   <link rel="stylesheet" href="http://at.alicdn.com/t/font_2267194_9655sgw1wvg.css">
 </head>
 <body>
@@ -29,9 +28,9 @@
       <div class="top-head-full iconfont" :class="{'icon-screen-full': !isScreenFull, 'icon-screen-restore': isScreenFull}" @click="screenFull"></div>
       <div class="top-head-profile">
         <div class="profile-icon">
-          <img :src="mimg" style="border-radius: 50%;" alt="">
+          <img src="/public/img/default.jpg" style="border-radius: 50%;" alt="">
         </div>
-        <div class="profile-name">{{mname}}</div>
+        <div class="profile-name">高武杰</div>
         <div class="profile-down layui-icon layui-icon-down"></div>
         <div class="profile-up-container">
           <button @click="exitClick">退出登录</button>
@@ -198,18 +197,18 @@
 
   <!-- 菜单模板 -->
   <script type="text/html" id="barDemo">
-    <a class="layui-btn btn-visible layui-btn-xs" lay-event="sj">上架</a>
-    <a class="layui-btn btn-hidden layui-btn-xs" lay-event="xj">下架</a>
-    <a class="layui-btn btn-delete layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="sj">上架</a>
+    <a class="layui-btn layui-btn-xs" lay-event="xj">下架</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
   </script>
   <!-- 菜单模板 -->
   <script type="text/html" id="menuDemo">
-    <img src="/{{ d.mimg }}">
+    <img src="http://127.0.0.1:2020{{ d.mimg }}">
   </script>
 
   <!-- 评论模板 -->
   <script type="text/html" id="commentImg">
-    <img src="/{{ d.uimg }}">
+    <img src="http://127.0.0.1:2020{{ d.uimg }}">
   </script>
   <script type="text/html" id="commentImgList">
     {{#  if(d.imglist.length > 0){ }}
@@ -229,7 +228,7 @@
   <script>
     // 首页预览
     ;(async function(){
-      let { data: resData } = await axios.get('/home/income?sid=1&month=12')
+      let { data: resData } = await axios.get('http://127.0.0.1:2020/home/income?sid=1&month=12')
       let dateList = resData.map(v => {
         let str = String(v.daytime)
         return str.length<2 ? '0'+str : str
@@ -239,10 +238,6 @@
 
       let myChart = echarts.init(document.querySelector('#chart-container'))
       let options = {
-        tooltip: {
-          show: true,
-          trigger : 'axis'
-        },
         grid: {
           top: 40,
           bottom: 50,
@@ -296,13 +291,13 @@
             }],
             color: '#ff6600',
             symbolSize: 7.6,
-            // symbol: 'image:///public/img/max.svg',
+            // symbol: 'image://http://127.0.0.1:2020/public/img/max.svg',
             symbol: (val, obj) => {
       
               if (obj.name === 'max') {
-                return 'image:///public/img/max.svg'
+                return 'image://http://127.0.0.1:2020/public/img/max.svg'
               }
-              return 'image:///public/img/avg.svg'
+              return 'image://http://127.0.0.1:2020/public/img/avg.svg'
               
             },
             label: {
@@ -352,7 +347,7 @@
       }
       myChart.setOption(options)
       setInterval(async() => {
-        let { data: resData } = await axios.get('/home/income?sid=1&month=12')
+        let { data: resData } = await axios.get('http://127.0.0.1:2020/home/income?sid=1&month=12')
         let valueList = resData.map(v => v.dayprice)
 
         options.series[0].data = valueList
@@ -364,7 +359,7 @@
       let table = layui.table
       table.render({
         elem: '#order-content-table',
-        url: '/order?sid=5&type=month&time=2020-12',
+        url: 'http://127.0.0.1:2020/order?sid=5&type=month&time=2020-11',
         request: {
           limitName: 'num' //每页数据量的参数名，默认：limit
         },
@@ -377,11 +372,10 @@
           };
         },
         cols: [[
-          { field: '_id', title: 'ID', width: 60, style: `
-          text-align: center;`},
+          { field: '_id', title: 'ID',},
           { field: 'uname', title: '用户昵称', },
-          { field: 'mname', title: '菜名', },
-          { field: 'price', title: '价格', sort: true, },
+          { field: 'mname', title: '菜名', edit: 'text'},
+          { field: 'price', title: '价格', sort: true, edit: 'text'},
           { field: 'time', title: '下单时间', sort: true, },
         ]],
         page: true,
@@ -394,7 +388,7 @@
       table.render({
        
         elem: '#menu-content-table',
-        url: '/menu/select?sid=5',
+        url: 'http://127.0.0.1:2020/menu/select?sid=5',
         request: {
           limitName: 'num' //每页数据量的参数名，默认：limit
         },
@@ -407,8 +401,7 @@
           };
         },
         cols: [[
-          { field: 'mid', title: 'ID', width: 60, style: `
-          text-align: center;`},
+          { field: 'mid', title: 'ID',},
           { field: 'mname', title: '菜名', edit: true, },
           { field: 'mprice', title: '价格', edit: true, },
           { field: 'mimg', title: '图片', templet: '#menuDemo'},
@@ -422,7 +415,7 @@
         let mid = obj.data.mid
         if (obj.event === 'sj') {     // 上架
           axios
-            .post(`/menu/update`, `mid=${mid}&visibility=1`)
+            .post(`http://127.0.0.1:2020/menu/update`, `mid=${mid}&visibility=1`)
             .then(val => {
               if (Number(val.data) === 1) {
                 return layer.msg('成功上架, 上架后顾客可看到该商品')
@@ -433,7 +426,7 @@
         }
         if (obj.event === 'xj') {    // 下架
           axios
-            .post(`/menu/update`, `mid=${mid}&visibility=0`)
+            .post(`http://127.0.0.1:2020/menu/update`, `mid=${mid}&visibility=0`)
             .then(val => {
               if (Number(val.data) === 1) {
                 return layer.msg('成功下架, 下架后顾客将无法看到该商品')
@@ -449,7 +442,7 @@
           }, function(index){
             layer.close(index)
             axios
-              .get(`/menu/delete?mid=${mid}`)
+              .get(`http://127.0.0.1:2020/menu/delete?mid=${mid}`)
               .then(val => {
                 if (Number(val.data) === 1) {
                   obj.del()
@@ -474,7 +467,7 @@
         
   
         let mid = obj.data.mid
-        axios.post(`/menu/update`, `mid=${mid}&${field}=${value}`,
+        axios.post(`http://127.0.0.1:2020/menu/update`, `mid=${mid}&${field}=${value}`,
         {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -494,7 +487,7 @@
       let table = layui.table
       table.render({
         elem: '#comment-content-table',
-        url: '/comment?sid=1',
+        url: 'http://127.0.0.1:2020/comment?sid=1',
         request: {
           limitName: 'num' //每页数据量的参数名，默认：limit
         },
@@ -507,8 +500,7 @@
           };
         },
         cols: [[
-          { field: 'id', title: 'ID', width: 60, style: `
-          text-align: center;`},
+          { field: 'id', title: 'ID',},
           { field: 'score', title: '评分', sort: true},
           { field: 'unickname', title: '用户昵称', },
           // { field: 'uimg', title: '用户头像', templet: '#commentImg' },
@@ -531,7 +523,7 @@
             return layer.msg('不能超过50个字符')
           }
           axios
-            .post(`/comment/response`, `id=${id}&response=${newResponse}`)
+            .post(`http://127.0.0.1:2020/comment/response`, `id=${id}&response=${newResponse}`)
             .then(res => {
               if (Number(res.data) === 1) {
                 layer.close(index)
