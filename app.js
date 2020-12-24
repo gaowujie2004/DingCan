@@ -78,6 +78,7 @@ app.get('/sigin', (req, res) => {
 
 
 // API路由中间件
+app.use('/public/img', express.static( path.join(__dirname, '../DIngCan-Public/img') ))
 app.use('/public', express.static( path.join(__dirname, 'public') ))
 app.use('/', indexRouter)
 app.use('/user', userRouter)
