@@ -9,6 +9,12 @@
   <link rel="stylesheet" href="/public/css/order.css">
   <link rel="stylesheet" href="/public/css/menu.css">
   <link rel="stylesheet" href="http://at.alicdn.com/t/font_2267194_9655sgw1wvg.css">
+  <link rel="stylesheet" href="/public/css/info.css">
+  <style>
+    img {
+      border-radius: 6px;
+    }
+  </style>
 </head>
 <body>
   <div id="app">
@@ -161,7 +167,7 @@
               <div class="item-row" v-for="(item,index) of topList" style="overflow: hidden;">
                 <div class="order">{{index+1}}</div>
                 <div class="name">
-                  <img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3281808061,454912648&fm=26&gp=0.jpg" alt="">
+                  <img :src="item.mimg" alt="">
                   <span>{{item.mname}}</span>
                 </div>
                 <div class="total" :class="">{{item.reservenum}}</div>
@@ -171,7 +177,7 @@
         </div>
       </li>
       <li class="order-content" :class="{show: navCurrentIndex===1}">
-        <table id="order-content-table" class="order-content-table">
+        <table id="order-content-table" class="order-content-table" lay-filter="order-content-table">
         </table>
       </li>
       <li class="menu-content" :class="{show: navCurrentIndex===2}">
@@ -183,7 +189,78 @@
         </table>
       </li>
       <li class="shopinfo-content" :class="{show: navCurrentIndex===4}">
-        xxxxxxxx
+        <div class="big">
+          <div class="top">
+              <div class="logo">
+                  <p>店铺logo</p>
+              </div>
+              <div class="header">
+                  <div>
+                      <img :src="shopInfo.slogo" alt="">
+                  </div>
+                  <div class="modify">
+                      <label>
+                        <input type="file" name="slogo">
+                        <a>选择图片</a>
+                      </label>
+                      <p>商家LOGO，将会被用户看到</p>
+                  </div>
+              </div>
+              <div class="cant">
+                  <p>所属餐厅</p>
+                  <div class="canname">
+                      <p>{{shopInfo.scanteen}}</p>
+                  </div>
+              </div>
+              <div class="xm">
+                  <p>店铺名称</p>
+                  <div class="flex-container">
+                      <p>{{shopInfo.shopname}}</p>
+                      <div>
+                          <button @click="changeShopName(shopInfo.sid)"><a href="javascript: void">更改名称</a></button>
+                      </div>
+                  </div>
+              </div>
+              <div class="slogan">
+                  <p>店铺标语</p>
+                  <div class="content">
+                      <p>{{shopInfo.slogan}}</p>
+                      <div>
+                          <button @click="changeLogan(shopInfo.sid)"><a href="javascript: void">更改标语</a></button>
+                      </div>
+                  </div>
+              </div>
+              <div class="Show">
+                  <div class="jie">
+                      <p class="aa">展示照片</p>
+                      <p class="bb">用于展示本店招牌菜</p>
+                  </div>
+                  <div class="showcase">
+                      <div class="login" v-for="(item,index) of shopInfo.showlist">
+                        <img :src="item" alt="">
+                        <div class="close-container">
+                          <i class="layui-icon layui-icon-close-fill"></i>
+                        </div>
+                      </div>
+                      
+                      <label @click="addImg(shopInfo.sid)">
+                        <input type="file" name="showimg">
+                          <div class="increase">
+                              <img src="/public/img/add.png" alt="">
+                              <p>添加图片</p>
+                          </div>
+                        </label>
+                  </div>
+              </div>
+              <div class="keyword">
+                  <p>分类关键字</p>
+                  <div class="bolt">
+                    <p>{{shopInfo.keyword && shopInfo.keyword.join('、')}}</p>
+                  </div>
+                  <button><a href="javascript: void">更改关键字</a></button>
+              </div>
+          </div>
+      </div>
       </li>
     </ul>
   </div>
@@ -196,6 +273,15 @@
   <script src="/public/js/echarts.min.js"></script>
   <script src="/public/js/index.js"></script>
 
+  <!-- 订单管理 -->
+  <script type="text/html" id="orderTool">
+    <div class="order-container">
+      <input type="text" placeholder="筛选日期范围 - 开始" lay-event="range" id="orderRangeStart" title="选择开始时间">
+      <input type="text" placeholder="筛选日期范围 - 结束" lay-event="range" id="orderRangeEnd" title="选择结束时间">
+      <a class="layui-btn btn-hidden layui-btn-xs" lay-event="orderOk">确定</a>
+    </div>
+  </script>
+
   <!-- 菜单模板 -->
   <script type="text/html" id="barDemo">
     <a class="layui-btn btn-visible layui-btn-xs" lay-event="sj">上架</a>
@@ -204,7 +290,7 @@
   </script>
   <!-- 菜单模板 -->
   <script type="text/html" id="menuDemo">
-    <img src="/{{ d.mimg }}">
+    <img src="{{ d.mimg }}">
   </script>
 
   <!-- 评论模板 -->
@@ -221,7 +307,7 @@
     {{#  } }}
   </script>
   <script type="text/html" id="commentTool">
-    <a class="layui-btn layui-btn-xs" lay-event="xj">回复顾客</a>
+    <a class="layui-btn btn-visible layui-btn-xs" lay-event="xj">回复顾客</a>
   </script>
 
   
@@ -359,12 +445,14 @@
         myChart.setOption(options)
         }, 2000)
     })()
+    
     // 订单管理
     layui.use('table', function(){
       let table = layui.table
-      table.render({
+      let tableIns = table.render({
         elem: '#order-content-table',
-        url: '/order?sid=5&type=month&time=2020-12',
+        toolbar: '#orderTool',
+        url: '/order?type=month&time=2020-12',
         request: {
           limitName: 'num' //每页数据量的参数名，默认：limit
         },
@@ -385,6 +473,54 @@
           { field: 'time', title: '下单时间', sort: true, },
         ]],
         page: true,
+      })
+    
+      // 日期范围 工具条
+      let rangeStart, rangeEnd
+      layui.laydate.render({
+        elem: '#orderRangeStart',
+        type: 'datetime',
+        done(time) {
+          rangeStart = time
+        }
+      })
+      layui.laydate.render({
+        elem: '#orderRangeEnd',
+        type: 'datetime',
+        done(time) {
+          rangeEnd = time
+        }
+      })
+
+      table.on('toolbar(order-content-table)', obj => {
+        console.log(obj)
+        if (obj.event === 'orderOk') {
+          console.log(rangeStart, rangeEnd)
+          tableIns.reload({
+            url: `/order?type=range&start=${rangeStart}&end=${rangeEnd}`,
+            // page: {
+            //   curr: 1
+            // }
+          })
+          layui.laydate.render({
+            elem: '#orderRangeStart',
+            type: 'datetime',
+            value: rangeStart,
+            done(time) {
+              rangeStart = time
+            }
+          })
+          layui.laydate.render({
+            elem: '#orderRangeEnd',
+            type: 'datetime',
+            value: rangeEnd,
+            done(time) {
+              rangeEnd = time
+            }
+          })
+          
+        }
+        
       })
     })
     
@@ -409,8 +545,8 @@
         cols: [[
           { field: 'mid', title: 'ID', width: 60, style: `
           text-align: center;`},
-          { field: 'mname', title: '菜名', edit: true, },
-          { field: 'mprice', title: '价格', edit: true, },
+          { field: 'mname', title: '菜名', edit: true, style: 'text-align:left; cursor: pointer;'},
+          { field: 'mprice', title: '价格', edit: true, style: 'text-align:left; cursor: pointer;'},
           { field: 'mimg', title: '图片', templet: '#menuDemo'},
           { title: '操作', toolbar: '#barDemo'}
         ]],
@@ -474,12 +610,7 @@
         
   
         let mid = obj.data.mid
-        axios.post(`/menu/update`, `mid=${mid}&${field}=${value}`,
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-        })
+        axios.post(`/menu/update`, `mid=${mid}&${field}=${value}`)
         .then(val => {
           if (Number(val.data) === 1) {
             return layer.msg('修改成功')
@@ -547,9 +678,6 @@
     })
 
     // 商家信息
-    
-    
-
   </script>
 </body>
 </html>

@@ -82,7 +82,13 @@ Router.post("/update",urlencoded, function (req,res) {
     var shop =Object.keys(req.body)[1]
     var shopTable=req.body[`${Object.keys(req.body)[1]}`]
     var mid =req.body.mid
-    mysql(`update shop_menu set  ${shop}=${shopTable} where mid=${mid}`,function (success) {
+    let sqlStr
+    if (typeof shopTable === 'number') {
+        sqlStr = `update shop_menu set  ${shop}=${shopTable} where mid=${mid}`
+    } else {
+        sqlStr = `update shop_menu set  ${shop}='${shopTable}' where mid=${mid}`
+    }
+    mysql(sqlStr, function (success) {
         if(success){
             res.send('1')
         }else{

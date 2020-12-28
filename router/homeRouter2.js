@@ -130,7 +130,13 @@ router.get('/top', async (req, response) => {
   let sid = Number(req.query.sid)
   
   try {
-    let value = await query(`select mname, count(*) as reservenum from shop_order where sid=${sid} group by mname order by reservenum desc limit 5`)
+    let value = await query(`
+    select shop_order.mname, count(*) as reservenum, mimg
+    from shop_order left join  shop_menu on shop_order.mid = shop_menu.mid
+    where shop_order.sid=1 
+    group by shop_order.mid 
+    order by reservenum desc 
+    limit 5;`)
     response.send(value.results)
   } catch(err) {
     console.log(err)

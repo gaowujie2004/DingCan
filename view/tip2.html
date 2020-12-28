@@ -24,8 +24,9 @@
         .nav>div {
             width: 1000px;
             margin: 0 auto;
-            display: flex;
             padding-top: 15px;
+            display: flex;
+            flex-direction: row-reverse;
         }
 
         .nav>div>img {
@@ -37,7 +38,8 @@
             padding-left: 1em;
             width: 180px;
             height: 60px;
-            color: rgb(247, 245, 245);
+            /* color: rgb(247, 245, 245); */
+            color: #000;
             letter-spacing: 2px;
 
             display: flex;
@@ -45,10 +47,10 @@
             justify-content: center;
         }
         .nav p {
-            font-size: 24px;
+            font-size: 28px;
         }
         .nav span {
-            font-size: 11px;
+            font-size: 14px;
             text-shadow: 0 0 15px rgba(0,0,0,.23);
         }
         /* .wrap>img {
@@ -59,10 +61,10 @@
         }
         .wrap>div{
             width: 100%;
-            height: 600px;
-            background-image: url('https://p0.meituan.net/travelcube/d2ab674fa0e4c875865e524d82fe15a34372569.png');
+            height: 100vh;
+            background-image: url('/public/img/tip.png');
             background-repeat: no-repeat;
-            background-size: 100%;
+            background-size: cover;
         }
         .wrap>div>div{
             border: 1px solid red;
@@ -82,7 +84,8 @@
             position: absolute;
             height: 170px;
             bottom:0px;
-            left: 280px;
+            left: 50%;
+            transform: translate(-50%);
             display: flex;
             align-items: center;
             
@@ -124,14 +127,26 @@
             color: white;
         }
         .main>div:nth-child(1){
-            background-color: #658FF7;
+            /* background-color: rgb(101, 143, 247); */
+            background-color: rgb(211,120,50);
+            /* background-color: #27b19a; */
+            
         }
         .main>div:nth-child(2){
-            background-color: #F54C45;
+            
+            /* #F54C45 */
+            
+            /* background-color: rgb(201,94,52); */
+            /* background-color: #45a3fd; */
+            background-color: rgb(192, 69, 55);
+            /* background-color: #183994; */
             left: 333px;
         }
         .main>div:nth-child(3){
-            background-color: #FFBD27;
+            
+            /* #FFBD27 */
+            background-color: rgb(220, 145, 47);
+            /* background-color:rgb(184, 85, 20); */
             left: 666px;
         }
         .tit-text {
@@ -148,21 +163,16 @@
     </script>
     <div class="nav">
         <div>
-            <img src="/public/img/logo.jpg" alt="" style="border-radius: 50%;">
+            
             <div>
                 <p>云订餐 APP</p>
                 <span>在线预定餐 方便你我他</span>
             </div>
+            <img src="/public/img/logo.jpg" alt="" style="border-radius: 50%;">
         </div>
     </div>
     <div class="wrap">
         <div>
-            <div>
-                <span>在线预订</span>
-                <br>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;方便你我</span>
-            </div>
-           
         </div>
     </div>
     <div class="main">
