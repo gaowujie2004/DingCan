@@ -31,7 +31,7 @@ Router.get("/select",function(req,res){
 
 
 //  增加一条数据     图片文件上传
-Router.use("/insert",upload.single("mimg"),function(req,res){
+Router.post("/insert",upload.single("mimg"),function(req,res){
 	var oldFile=req.file.destination+req.file.filename;	//指定旧文件
 	console.log(req.body)
 	var Document=req.file.originalname
@@ -46,20 +46,20 @@ Router.use("/insert",upload.single("mimg"),function(req,res){
 		if(err){
 			res.send('0');
 		}else{
-    var sid = req.body.sid
+    var sid = req.query.sid
     var mname = req.body.mname
     var mimg = `${pots}`
     var mprice = req.body.mprice
-    var visibility = 1
+ 
     console.log(mimg)
-    console.log(` insert into shop_menu(sid, mname, mimg, mprice, visibility) values(${sid}, '${mname}', '${mimg}', ${mprice}, ${visibility})`)
-    mysql(` insert into shop_menu(sid, mname, mimg, mprice, visibility) values(${sid}, '${mname}', '${mimg}', ${mprice}, ${visibility})`,function (success) {
-        if(success.affectedRows==1){
-            res.send("1")
-        }else{
-            res.send("0")
-        }
-    })
+    console.log(` insert into shop_menu(sid, mname, mimg, mprice, visibility) values(${sid}, '${mname}', '${mimg}', ${mprice}, '1')`)
+    // mysql(` insert into shop_menu(sid, mname, mimg, mprice, visibility) values(${sid}, '${mname}', '${mimg}', ${mprice}, '1')`,function (success) {
+    //     if(success.affectedRows===1){
+    //         res.send("1")
+    //     }else{
+    //         res.send("0")
+    //     }
+    // })
 		}
 	});
 });
@@ -75,7 +75,7 @@ Router.get("/delete",function (req,res) {
     })
 })
 
-//   修改  上架、下架   菜名 价格  菜的图片
+//   修改  上架、下架   菜名 价格 
 Router.post("/update",urlencoded, function (req,res) {
     // var shop=req.url.replace("/","")
     console.log(req.body)

@@ -25,7 +25,7 @@ router.get('/base', async (req, response) => {
 
     // 预收入
     let monthIncomePromise = query(`select sum(price) as monthprice from shop_order where sid=${sid} and month(time)=month(curdate())`)
-    let nowIncomePromise = query(`select price from shop_order where sid=${sid} and day(time)=day(curdate())`)
+    let nowIncomePromise = query(`select sum(price) as nowprice from shop_order where sid=1 and day(time)=day(curdate())`)
 
     // 点赞数
     let totalLikePromise = query(`select count(*) as total from shop_like where sid=${sid}`)
@@ -59,7 +59,7 @@ router.get('/base', async (req, response) => {
       monthIncome = values[2].results[0].monthprice
     }
     if (values[3].results.length > 0) {
-      nowIncome = values[3].results[0].price
+      nowIncome = values[3].results[0].nowprice
     }
 
     // 点赞量 4 5
@@ -117,8 +117,6 @@ router.get('/income', async (req, response) => {
 
   let { results } = await query(`select sum(price) as dayprice,day(time) as daytime from shop_order where sid=${sid} and year(time)='${year}' and month(time)='${month}' group by date(time) order by time asc`)
   response.send(results)
-
-  console.log(sid, 'sid----------------------')
 })
 
 /**

@@ -66,7 +66,7 @@ infoRouter.post('/up/logo', upload.single('slogo'), function (req, res, next) {
 	let slogo = path.posix.join('/public/img/user', req.file.filename)
 
 	mysql(`update shopkeeper set slogo='${slogo}' where sid=${sid}`, function (success) {
-		if (success.affectedRows == 1) { 
+		if (success.affectedRows === 1) { 
 			res.send("1") 
 		} else {
 			res.send("0")

@@ -53,13 +53,13 @@ app.use((req,res,next) => {
 
 // 页面路由
 app.get('/', (req, res) => {
-  res.sendFile(path.join( __dirname, 'view/tip2.html'))
+  res.sendFile(path.join( __dirname, 'view/tip3.html'))
 })
 app.get('/index', (req, res) => {
   if (req.session.isLogin) {
     res.sendFile(path.join( __dirname, 'view/index.html'))
   } else {
-    res.redirect(302, '/')
+    res.sendFile(path.join( __dirname, 'view/tip2.html'))
   }
   
 })
@@ -67,12 +67,12 @@ app.get('/login', (req, res) => {
   if (req.session.isLogin) {
     res.sendFile(path.join( __dirname, 'view/index.html'))
   } else {
-    res.sendFile(path.join( __dirname, 'view/login.html'))
+    res.sendFile(path.join( __dirname, 'view/login2.html'))
   }
   
 })
 app.get('/sigin', (req, res) => {
-  res.sendFile(path.join( __dirname, 'view/sigin.html'))
+  res.sendFile(path.join( __dirname, 'view/sigin2.html'))
 })
 
 

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云订餐APP - 首页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            
+        }
+        body{
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+            background: url('/public/img/tip.png');
+            background-size:cover;
+
+        }
+        .btn-container {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            right: 0;
+            margin: auto;
+
+            display: flex;
+            justify-content: center;
+        }
+        .btn-container img {
+            cursor: pointer;
+            transition: transform .15s;
+        }
+        .btn-container img:hover {
+            transform: scale(1.03);
+        }
+        .btn-container img:active {
+            transform: scale(.9);
+        }
+        .btn-container img + img {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="btn-container">
+        <img src="/public/img/sigin.png" alt="" onclick="location.href = '/sigin'">
+        <img src="/public/img/login.png" alt="" onclick="location.href = '/login'">
+        <!-- <img src="/public/img/student.png" alt=""> -->
+    </div>
+</body>
+
+</html>

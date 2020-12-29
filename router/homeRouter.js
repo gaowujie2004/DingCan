@@ -33,7 +33,6 @@ router.use(bodyParser.urlencoded({extended: false}))
 router.get('/base', (req, response) => {
   const sid = Number(req.query.sid)
   const date = new Date()
-  console.log(sid);
 
   // 预收入(今日|本月 shop_order) - 总订单量(今日订单量   shop_order) - 总点赞数(今日点赞量 shop_like) - 总浏览量(今日 shop_browser)
 
@@ -42,7 +41,6 @@ router.get('/base', (req, response) => {
     
     // 总订单量 - 查询
     let totalOrderNum = res[0].count
-    console.log('所有订单数:', totalOrderNum);
 
     // 今日订单量 - 查询
     connection.query(`select count(*) as count from \`shop_order\` where \`sid\`=${sid} and day(\`time\`)=day(curdate())`, (err, res) => {
@@ -50,7 +48,6 @@ router.get('/base', (req, response) => {
         console.log('错误', err);
       } else {
         let nowOrderNum = res[0].count
-        console.log('今日订单数', nowOrderNum)
 
         // 订单数 - 昨日
         // connection.query(`select count(*) as count from shop_order where sid=${sid} and DATE(time)=DATE(DATE_SUB(curdate(),INTERVAL 1 DAY))`, (err, res) => {
@@ -70,7 +67,6 @@ router.get('/base', (req, response) => {
           let nowIncome = res.reduce((temp, item, index) => {
             return temp + item.price
           }, 0)
-          console.log('今日预收入: ' ,nowIncome)
 
           // 本月 预收入 - 查询
           connection.query(`select price from shop_order where sid=${sid} and month(time)=month(curdate())`, (err, res, fields) => {
@@ -80,7 +76,6 @@ router.get('/base', (req, response) => {
             let monthIncome = res.reduce((temp, item, index) => {
               return temp + item.price
             }, 0)
-            console.log('本月预收入:' ,monthIncome)
             
             // 总点赞数 - 查询
             connection.query(`select likenum from shop_like where sid=${sid}`, (err, res) => {
@@ -90,7 +85,6 @@ router.get('/base', (req, response) => {
               let totalLikeNum = res.reduce((temp, item, index) => {
                 return temp + item.likenum
               }, 0)
-              console.log('总点赞数: ', totalLikeNum)
 
               // 今日点赞量 - 查询
               connection.query(`select likenum from shop_like where sid=${sid} and day(time)=day(curdate())`, (err, res) => {
@@ -100,7 +94,6 @@ router.get('/base', (req, response) => {
                 let nowLikeNum = res.reduce((temp, item, index) => {
                   return temp + item.likenum
                 }, 0)
-                console.log('今日点赞数: ', nowLikeNum)
 
                 // 总的浏览量
                 connection.query(`select num from shop_browser where sid=${sid}`, (err, res) => {
@@ -110,7 +103,6 @@ router.get('/base', (req, response) => {
                   let totalBrowserNum = res.reduce((temp, item, index) => {
                     return temp + item.num
                   }, 0)
-                  console.log('总浏览量', totalBrowserNum)
 
                   // 今日浏览量
                   connection.query(`select num from shop_browser where sid=${sid} and date(time)=date(curdate())`, (err, res) => {
@@ -120,7 +112,6 @@ router.get('/base', (req, response) => {
                     let nowBrowserNum = res.reduce((temp, item, index) => {
                       return temp + item.num 
                     }, 0)
-                    console.log('今日浏览量', nowBrowserNum)
 
                     response.send({
                       nowBrowserNum,

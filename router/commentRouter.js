@@ -18,7 +18,7 @@ router.get('/', async(req, response) => {
   let totalNum    // 总条数
 
   try {
-    let sqlStr = `select _id as id,unickname,uimg,imglist,score,content,response,time from (shop_comment left join user on shop_comment.uid=user.uid) where sid=${sid} limit ${(page-1)*num}, ${num}`
+    let sqlStr = `select _id as id,unickname,uimg,imglist,score,content,response,time from (shop_comment left join user on shop_comment.uid=user.uid) where sid=${sid} order by time desc limit ${(page-1)*num}, ${num}`
     let { results } = await query(sqlStr)
     let { results: countData } = await query(`select count(*) as count from (shop_comment left join user on shop_comment.uid=user.uid) where sid=${sid}`)
     totalNum = countData[0].count

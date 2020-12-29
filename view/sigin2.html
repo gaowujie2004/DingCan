@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0,user-scalable=no'>
+<title>云订餐 - 商家注册</title>
+<link rel="stylesheet" href="/public/layui-dist/css/layui.css">
+<script src="/public/layui-dist/layui.all.js"></script>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        height: 100vh;
+        overflow: hidden;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: url('/public/img/login-bg.png');
+        background-size: cover;
+    }
+
+    ::-webkit-scrollbar {
+       
+        width:10px;
+        /* background-color: red; */
+        background-color: rgba(255,255,255,.7);;
+    }
+    ::-webkit-scrollbar-track {
+        border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb{
+        height: 20%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, .1);
+        background-color: #999;
+    }
+    #app {
+        padding: 1em 0;
+        padding-bottom: 4em;
+
+        overflow-y: auto;
+        width: 42%;
+        height: 82vh;
+        border-radius: 10px;
+
+        background-color: rgba(255,255,255,.7);
+
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+    }
+    h1 {
+        font-size: 50px;
+        font-weight: 100;
+        color: #1c1c1c;
+
+        margin-top: auto;
+        margin-bottom: 50px;
+    }
+    input + input {
+        margin-top: 25px;
+        margin-bottom: auto;
+    }
+    input {
+        transition: all .3s;
+        width: 400px;
+        height: 50px;
+        outline-color: transparent;
+
+        border: 3px solid #777;
+        border-radius: 100vw;
+        font-size: 17px;
+        padding-left: 1em;
+    }
+    input:focus {
+        padding-left: 1.5em;
+    }
+    button {
+        margin-top: 1em;
+        margin-bottom: auto;
+
+        flex: 0 0 auto;
+        width: 410px;
+        height: 60px;
+        font-size: 35px;
+        font-weight: 100;
+        background-color: #f60;
+        outline:none 0;
+        border: none 0;
+
+        color: #fff;
+        border-radius: 100vw;
+        cursor: pointer;
+
+        transition: all .15s;
+    }
+    button:active {
+        transform: scale(.95);
+    }
+    button:hover {
+        background-color: rgb(197, 79, 1);
+    }
+
+
+    p {
+        bottom: 1em;
+        position: absolute;
+        font-size: 16px;
+        color: #4f4f4f;
+    }
+    span {
+        cursor: pointer;
+    }
+    span:hover {
+        text-decoration: underline;
+    }
+
+    .fontSize {
+        font-size: 20px;
+        padding-bottom: 5px;
+    }
+    .fontTop1 {
+        margin-top: 20px;
+        width: 400px;
+    }
+</style>
+</head>
+<body>
+  
+        <form id="app" method="post" enctype="multipart/form-data">
+        
+            <h1>商家注册</h1>
+            <div class="fontTop">
+                <div class="fontSize">用户名</div>
+                <div class="fontInput">
+                    <input @blur="unameBlur" v-model="unameVal" class="input" placeholder="用户名 6 ~ 12位" type="text" name="sname">
+                </div>
+            </div>
+            <div class="fontTop1">
+                <div class="fontSize">密&#x3000;码</div>
+                <div class="fontInput">
+                    <input @blur="pwdBlur" v-model="pwdVal" class="input" placeholder="密码 6 ~ 20位" type="password" name="spwd">
+                </div>
+            </div>
+            <div class="fontTop1">
+                <div class="fontSize">确认密码</div>
+                <div class="fontInput">
+                    <input @blur="verifyBlur" v-model="verifyVal" class="input" placeholder="确认密码" type="password">
+                </div>
+            </div>
+            <div class="fontTop1">
+                <div class="fontSize">店铺名称</div>
+                <div class="fontInput">
+                    <input @blur="shopNameBlur" v-model="shopNameVal" class="input" placeholder="店铺名称 2 ~ 10" type="text" name="shopname">
+                </div>
+            </div>
+            <div class="fontTop1">
+                <div class="fontSize">店铺开设地点</div>
+                <div class="fontInput">
+                    <input @blur="canteenBlur" v-model="canteenVal" class="input" placeholder="餐厅,比如: 西西里" type="text" name="scanteen">
+                </div>
+            </div>
+            <div class="fontTop1">
+                <div class="fontSize">店铺LOGO</div>
+                <div class="fontInput">
+                    <input @change="logoChange" type="file" class="File" name="slogo" id="" style="display: none;">
+                    <i class="layui-icon layui-icon-camera" style="font-size: 39px;cursor:pointer;" onclick="file()"></i>
+                </div>
+            </div>
+            <div class="fontTop1">
+                <div class="fontSize">店铺参考图片</div>
+                <div class="fontInput">
+                    <input @click="showChange" type="file" class="File" name="showlist" id="" style="display: none;" placeholder="用于展示给顾客参考" multiple>
+                    <i class="layui-icon layui-icon-camera" style="font-size: 39px;cursor:pointer;" onclick="file1()"></i>
+                </div>
+            </div>
+            <div class="fontTop1">
+                <div class="fontSize">店铺标语</div>
+                <div class="fontInput">
+                    <input @blur="loganBlur" v-model="loganVal" class="input" placeholder="用于展现给顾客,过长导致顾客看不完整" type="text" name="slogan">
+                </div>
+            </div>
+            <button @click="submitClick" class="btn" type="button">注册</button>
+        </form>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+<script>
+    function file(){
+document.querySelectorAll(".File")[0].click()
+  }
+    function file1(){
+document.querySelectorAll(".File")[1].click()
+  }
+    function big(s) {
+      console.log(document.querySelectorAll("i"))
+      s.classList.remove("img")
+      s.classList.add("img2")
+      document.querySelectorAll("i")
+      console.log(document.querySelectorAll(".i"))
+      for(var xx=0;xx<document.querySelectorAll("i").length;xx++){
+        document.querySelectorAll("i")[xx].style.display="none"
+        document.querySelectorAll("i")[xx].classList.remove("i")
+      }
+    document.querySelectorAll("i")[s.getAttribute("data-num")].style.display="inline-block"
+    document.querySelectorAll("i")[s.getAttribute("data-num")].classList.add("i2")
+  }
+
+    let app = new Vue({
+        el: '#app',
+        data: {
+            unameVal: '',
+            pwdVal: '',
+            verifyVal: '',
+            shopNameVal: '',
+            canteenVal: '',
+            logo: '',           // 特殊
+            showList: '',       // 特殊
+            loganVal: '',
+        },
+        methods: {
+            unameBlur() {
+                let name = this.unameVal
+                if (name.length>=6 && name.length<=20) {
+                    axios
+                    .get(`/user/sigincheck?sname=${name}`)
+                    .then(val => {
+                        if (Number(val.data) === 1) {
+                            return layer.msg('OK 用户可以使用')
+                        }
+                        layer.msg('NO 用户名不能使用请更换')
+                    })
+                    return
+                }
+                layer.msg('NO 6-20位的长度')
+            },
+            pwdBlur() {
+                let pwd = this.pwdVal
+                if (pwd.length < 6 || pwd.length > 20) {
+                    return layer.msg('6-20位长度')
+                }
+            },
+            verifyBlur() {
+                if (this.pwdVal !== this.verifyVal) {
+                    return layer.msg('两次密码不一致')
+                }
+            },
+            shopNameBlur() {
+                if (this.shopNameVal.length < 2 || this.shopNameVal.length>10) {
+                    return layer.msg('2-10位字符')
+                }
+            },
+            canteenBlur() {
+                if (this.shopNameVal.length < 2 || this.shopNameVal.length>10) {
+                    return layer.msg('5-20个字符, 过长可能导致顾客看不完整')
+                }
+            },
+            logoChange() {
+
+            },
+            showChange(e) {
+                layer.msg('可以选择多张图片')
+            },
+            loganBlur() {
+
+            },
+            submitClick() {
+                if (this.loganVal.length === 0) { 
+                    return layer.msg('无法注册, 请填写所有信息')
+                }
+                let formData = new FormData(document.querySelector('form'))
+                axios
+                    .post('/user/sigin', formData)
+                    .then(val => {
+                        if (Number(val.data) === 1) {
+                            setTimeout(() => {
+                                location.href = '/index'
+                            }, 1200)
+                            return layer.msg('注册成功, 正在跳转首页')
+                        }
+                        layer.msg('注册失败, 请刷新重试!')
+                    })
+                    .catch(err => {
+                        layer.msg('注册失败, 请刷新重试!')
+                    })
+               
+            }
+        },
+    })
+</script>
+</body>
+</html>

@@ -475,6 +475,10 @@
         page: true,
       })
     
+      // 自动刷新
+      
+
+
       // 日期范围 工具条
       let rangeStart, rangeEnd
       layui.laydate.render({
@@ -645,6 +649,7 @@
           // { field: 'uimg', title: '用户头像', templet: '#commentImg' },
           { field: 'imglist', title: '评论图片', templet: '#commentImgList'},
           { field: 'content', title: '评论内容'},
+          { field: 'time', title: '评论时间', sort: true},
           { field: 'response', title: '商家回复', edit: true},
           { title: '回复操作', toolbar: '#commentTool'},
         ]],

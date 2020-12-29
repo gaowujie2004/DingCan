@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0,user-scalable=no'>
+<title>云订餐 - 商家登录</title>
+<link rel="stylesheet" href="/public/layui-dist/css/layui.css">
+<script src="/public/layui-dist/layui.all.js"></script>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        height: 100vh;
+        overflow: hidden;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: url('/public/img/login-bg.png');
+        background-size: cover;
+    }
+    #app {
+        width: 42%;
+        height: 82vh;
+        border-radius: 10px;
+
+        background-color: rgba(255,255,255,.8);
+
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+    }
+    h1 {
+        font-size: 50px;
+        font-weight: 100;
+        color: #1c1c1c;
+
+        margin-top: auto;
+        margin-bottom: 50px;
+    }
+    input + input {
+        margin-top: 25px;
+        margin-bottom: auto;
+    }
+    input {
+        transition: all .3s;
+        width: 410px;
+        height: 60px;
+        outline-color: transparent;
+
+        border: 3px solid #777;
+        border-radius: 100vw;
+        font-size: 20px;
+        padding-left: 1em;
+    }
+    input:focus {
+        padding-left: 1.5em;
+    }
+    button {
+        margin-bottom: auto;
+
+        width: 410px;
+        height: 60px;
+        font-size: 35px;
+        font-weight: 100;
+        background-color: #f60;
+        outline:none 0;
+        border: none 0;
+
+        color: #fff;
+        border-radius: 100vw;
+        cursor: pointer;
+
+        transition: all .15s;
+    }
+    button:active {
+        transform: scale(.95);
+    }
+    button:hover {
+        background-color: rgb(197, 79, 1);
+    }
+
+
+    p {
+        bottom: 1em;
+        position: absolute;
+        font-size: 16px;
+        color: #4f4f4f;
+    }
+    span {
+        cursor: pointer;
+    }
+    span:hover {
+        text-decoration: underline;
+    }
+</style>
+</head>
+<body>
+    <div id="app">
+        <h1>登录</h1>
+        <input type="text" placeholder="用户名" v-model="snameVal">
+        <input type="password" placeholder="请输入密码" v-model="spwdVal">
+        <button @click="submitClick">登录</button>
+        <p>没有账号? <span onclick="location.href = '/sigin'">前往注册</span></p>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+<script>
+    let app = new Vue({
+        el: '#app',
+        data: {
+            snameVal: '',
+            spwdVal: '',
+        },
+        methods: {
+            submitClick() {
+                console.log('执行了')
+                let name = this.snameVal.trim()
+                let spwd = this.spwdVal.trim()
+
+                if (name.length && spwd.length) {
+                    axios
+                        .post('/user/login', `sname=${name}&spwd=${spwd}`)
+                        .then(val => {
+                            if (Number(val.data) === 1) {
+                                return location.href = '/index'
+                            }
+                            layer.msg('账号和密码不匹配')
+                        })
+                    return 
+                }
+                layer.msg('登录失败, 重试')
+            }
+        },
+    })
+</script>
+</body>
+</html>
